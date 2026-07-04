@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="113">
+ <tileset firstgid="1" source="Tilesets/Tileset_Dungeon.tsx"/>
+ <tileset firstgid="109" source="Tilesets/Props_Animated.tsx"/>
+ <tileset firstgid="144" source="Tilesets/Objects_Overlay.tsx"/>
+ <tileset firstgid="164" source="Tilesets/Items_Animated.tsx"/>
+ <tileset firstgid="172" source="Tilesets/Items_Static.tsx"/>
+ <tileset firstgid="181" source="Tilesets/Props_Static.tsx"/>
+ <tileset firstgid="189" source="Tilesets/Tileset_Dungeon.tsx"/>
+ <layer id="1" name="Base Layer" width="15" height="15">
+  <data encoding="csv">
+20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,
+1,5,3,5,35,2,3,55,4,4,3,3,4,6,20,
+13,44,16,41,22,29,28,14,16,14,26,41,39,18,20,
+25,56,14,7,12,38,39,27,27,41,14,41,27,18,20,
+49,9,38,31,33,39,40,26,17,29,41,41,15,18,20,
+20,37,26,15,38,26,17,15,14,16,26,16,39,18,20,
+20,25,17,14,7,9,26,38,29,7,9,14,7,54,20,
+20,13,26,28,31,60,50,51,52,54,13,26,31,32,6,
+20,49,9,26,26,31,5,4,6,20,21,17,26,14,30,
+20,20,49,9,27,44,44,44,11,32,33,16,14,29,42,
+20,1,5,33,16,56,56,56,22,29,27,16,39,7,54,
+20,13,29,26,38,17,56,56,34,27,17,38,7,54,20,
+20,25,27,7,9,15,38,40,41,15,10,29,18,20,20,
+20,49,50,54,49,50,50,50,50,50,12,43,19,20,20,
+20,20,20,20,20,20,20,20,20,20,49,51,54,20,20
+</data>
+ </layer>
+ <layer id="6" name="Props Layer" width="15" height="15">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,181,0,0,185,140,0,140,181,0,137,137,0,0,
+0,0,186,184,0,186,182,62,0,0,0,0,0,0,0,
+0,0,109,0,0,182,73,89,88,88,88,87,186,0,0,
+0,0,0,0,0,0,65,0,0,188,109,0,0,0,0,
+0,0,0,188,0,0,77,88,87,109,123,116,0,0,0,
+0,0,183,123,0,0,0,0,0,0,0,0,0,0,0,
+0,0,187,116,0,0,0,0,0,0,0,62,181,0,0,
+0,0,0,188,0,130,0,130,0,0,0,61,88,87,0,
+0,0,0,0,0,0,0,0,0,0,140,65,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,64,186,0,0,
+0,0,187,0,184,188,0,0,0,182,0,187,0,0,0,
+0,0,188,0,0,116,187,184,0,183,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="7" name="Shadows Layer">
+  <object id="72" gid="145" x="364" y="164" width="32" height="32"/>
+  <object id="73" gid="145" x="201.5" y="216.5" width="32" height="32"/>
+  <object id="74" gid="145" x="228.5" y="149.5" width="32" height="32"/>
+  <object id="75" gid="152" x="256" y="148" width="32" height="32"/>
+  <object id="76" gid="152" x="351" y="83.5" width="32" height="32"/>
+  <object id="80" gid="152" x="320.5" y="338" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="4" name="Overlay Layer">
+  <object id="15" name="StartingPoint" x="224" y="32" width="32" height="32"/>
+  <object id="16" name="ExitPoint" x="352" y="416" width="32" height="32"/>
+  <object id="38" gid="144" x="187.5" y="226.25" width="32" height="32"/>
+  <object id="39" gid="144" x="202.75" y="214.5" width="32" height="32"/>
+  <object id="41" gid="151" x="216.75" y="225.5" width="32" height="32"/>
+  <object id="42" gid="153" x="258.25" y="225.5" width="32" height="32"/>
+  <object id="43" gid="154" x="352" y="240" width="32" height="48"/>
+  <object id="44" gid="158" x="258.125" y="416.75" width="64" height="64"/>
+  <object id="45" gid="156" x="384" y="275.045" width="32" height="32"/>
+  <object id="46" gid="162" x="351" y="86.6667" width="32" height="32"/>
+  <object id="47" gid="155" x="63.5" y="176.5" width="32" height="48"/>
+  <object id="50" gid="150" x="383.854" y="88.3542" width="32" height="48"/>
+  <object id="52" gid="146" x="319.083" y="87.1042" width="32" height="48"/>
+  <object id="53" gid="147" x="416" y="280" width="32" height="48"/>
+  <object id="54" gid="147" x="287.333" y="343.333" width="32" height="48"/>
+  <object id="55" gid="163" x="319.667" y="341.667" width="32" height="32"/>
+  <object id="56" gid="151" x="386" y="193" width="32" height="32"/>
+  <object id="57" gid="153" x="385.5" y="170.5" width="32" height="32"/>
+  <object id="58" gid="144" x="386.5" y="149" width="32" height="32"/>
+  <object id="60" gid="144" x="365" y="164" width="32" height="32"/>
+  <object id="61" gid="163" x="255.5" y="149.5" width="32" height="32"/>
+  <object id="62" gid="151" x="247" y="131" width="32" height="32"/>
+  <object id="63" gid="151" x="274" y="138" width="32" height="32"/>
+  <object id="64" gid="144" x="228" y="149" width="32" height="32"/>
+  <object id="67" gid="159" x="125" y="192" width="64" height="64"/>
+  <object id="81" gid="149" x="128" y="275" width="32" height="48"/>
+  <object id="83" gid="158" x="96" y="384" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup id="5" name="Items Layer">
+  <object id="84" gid="164" x="320.667" y="180.667" width="32" height="32"/>
+  <object id="88" gid="168" x="148" y="376" width="32" height="32"/>
+  <object id="89" gid="168" x="52.6667" y="405.333" width="32" height="32"/>
+  <object id="93" gid="174" x="351" y="222.5" width="32" height="32"/>
+  <object id="94" gid="174" x="256.5" y="404" width="32" height="32"/>
+  <object id="95" gid="177" x="96.5" y="93" width="32" height="32"/>
+  <object id="97" gid="178" x="417.5" y="293" width="32" height="32"/>
+  <object id="99" gid="179" x="289.5" y="364" width="32" height="32"/>
+  <object id="100" gid="168" x="160.667" y="125.333" width="32" height="32"/>
+  <object id="101" gid="168" x="161.333" y="92" width="32" height="32"/>
+  <object id="102" gid="168" x="194" y="92" width="32" height="32"/>
+  <object id="103" gid="168" x="224" y="412.667" width="32" height="32"/>
+  <object id="104" gid="164" x="384.667" y="349.333" width="32" height="32"/>
+  <object id="105" gid="164" x="318.667" y="369.333" width="32" height="32"/>
+  <object id="106" gid="164" x="352.667" y="369.333" width="32" height="32"/>
+  <object id="107" gid="164" x="288.667" y="413.333" width="32" height="32"/>
+  <object id="108" gid="164" x="384" y="304.667" width="32" height="32"/>
+  <object id="109" gid="164" x="416" y="319.333" width="32" height="32"/>
+  <object id="110" gid="178" x="64" y="255.333" width="32" height="32"/>
+  <object id="111" gid="176" x="383.333" y="110.667" width="32" height="32"/>
+  <object id="112" gid="160" x="66.6667" y="369.333" width="32" height="32"/>
+ </objectgroup>
+</map>
