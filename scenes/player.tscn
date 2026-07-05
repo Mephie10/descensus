@@ -219,7 +219,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_a38lo")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"attack_down",
 "speed": 8.0
 }, {
@@ -236,7 +236,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ujl30")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"attack_side",
 "speed": 8.0
 }, {
@@ -253,7 +253,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wqfne")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"attack_up",
 "speed": 8.0
 }, {
@@ -276,7 +276,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jc3p3")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"death",
 "speed": 8.0
 }, {
@@ -402,20 +402,32 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
-size = Vector2(12, 17)
+size = Vector2(15, 17.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f03mx"]
+size = Vector2(10, 46.5)
 
 [node name="Player" type="CharacterBody2D" unique_id=337135565]
 collision_layer = 2
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=953661259]
-position = Vector2(0, -24)
+position = Vector2(-2, -3)
 sprite_frames = SubResource("SpriteFrames_dqkch")
-animation = &"attack_down"
+animation = &"attack_side"
 autoplay = "idle_down"
 frame = 3
-frame_progress = 0.79948884
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2146914492]
-position = Vector2(1, -8.5)
+position = Vector2(-0.5, 12.25)
 shape = SubResource("RectangleShape2D_8upax")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=509753278]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=970118499]
+position = Vector2(0, -2.75)
+shape = SubResource("RectangleShape2D_f03mx")
+disabled = true
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

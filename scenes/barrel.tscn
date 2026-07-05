@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cltgsk5nonkoi"]
+
+[ext_resource type="Script" uid="uid://bsna8sg6reiup" path="res://scripts/barrel.gd" id="1_n8wf6"]
+[ext_resource type="Texture2D" uid="uid://lxrwnracj0dy" path="res://assets/Props/Static/barrel.png" id="1_ptqd7"]
+[ext_resource type="Texture2D" uid="uid://bgjnj1j2appj4" path="res://assets/Props/Static/debris1.png" id="2_n8wf6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
+size = Vector2(25, 30)
+
+[node name="Barrel" type="StaticBody2D" unique_id=1372817860 groups=["destructibles"]]
+z_index = 3
+z_as_relative = false
+script = ExtResource("1_n8wf6")
+
+[node name="IntactSprite" type="Sprite2D" parent="." unique_id=609285773]
+z_index = 3
+z_as_relative = false
+texture = ExtResource("1_ptqd7")
+
+[node name="RubbleSprite" type="Sprite2D" parent="." unique_id=434568923]
+visible = false
+z_index = 1
+z_as_relative = false
+texture = ExtResource("2_n8wf6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1017807097]
+position = Vector2(0.5, -1)
+shape = SubResource("RectangleShape2D_8upax")
