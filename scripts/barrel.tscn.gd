@@ -15,4 +15,6 @@ func smash():
 	intact_sprite.hide()
 	rubble_sprite.show()
 	
+	$NavigationObstacle2D.avoidance_enabled = false
+	
 	collision.set_deferred("disabled", true)

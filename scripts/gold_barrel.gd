@@ -17,4 +17,6 @@ func smash():
 	rubble_sprite.show()
 	gold_coin.show()
 	
+	$NavigationObstacle2D.avoidance_enabled = false
+	
 	collision.set_deferred("disabled", true)
