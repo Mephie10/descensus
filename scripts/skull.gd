@@ -5,12 +5,13 @@ const WANDER_SPEED = 30.0
 
 @onready var anim = $AnimatedSprite2D
 @onready var collision = $CollisionShape2D
+@onready var nav_agent = $NavigationAgent2D
 
 var player = null
 var is_dead = false
-var max_health = 25.0
-var current_health = 25.0
-var attack_damage = 10.0
+var max_health = 30.0
+var current_health = 30.0
+var attack_damage = 15.0
 
 # --- KI Variablen ---
 var start_position: Vector2
@@ -23,7 +24,7 @@ var can_attack = true
 
 var wander_radius = 60.0
 var detection_radius = 120.0
-var attack_radius = 25.0
+var attack_radius = 30.0 
 var attack_cooldown = 1.5 
 var last_direction = Vector2.DOWN 
 
@@ -33,9 +34,21 @@ const MAX_WANDER_TIME = 4.0
 func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	start_position = global_position
+	nav_agent.velocity_computed.connect(_on_safe_velocity_computed)
+	call_deferred("_setup_navigation")
+
+func _setup_navigation():
+	await get_tree().physics_frame
 	_pick_new_wander_target()
 
-func _process(delta):
+func _on_safe_velocity_computed(safe_velocity: Vector2):
+	if is_dead:
+		return
+
+	velocity = safe_velocity
+	move_and_slide()
+
+func _physics_process(delta):
 	if is_dead:
 		return
 
@@ -58,7 +71,8 @@ func _process(delta):
 	else:
 		_wander(delta) 
 
-	move_and_slide()
+	if not is_dead:
+		nav_agent.velocity = velocity
 
 func _attack_player():
 	is_attacking = true
@@ -83,7 +97,10 @@ func _attack_player():
 		return
 	
 	if is_instance_valid(player) and player.has_method("take_damage"):
-		if global_position.distance_to(player.global_position) <= attack_radius + 5.0:
+		# FIX: Keine künstliche Toleranz mehr! Nur wenn der Spieler am Ende 
+		# der Animation wirklich noch innerhalb des attack_radius (30 Pixel) steht, 
+		# nimmt er Schaden. Ein kleiner Schritt zurück rettet dich jetzt.
+		if global_position.distance_to(player.global_position) <= attack_radius:
 			player.take_damage(attack_damage) 
 			
 	is_attacking = false 
@@ -92,10 +109,13 @@ func _attack_player():
 	can_attack = true
 
 func _chase_player():
-	var distance = global_position.distance_to(player.global_position)
-	var direction = (player.global_position - global_position).normalized()
+	nav_agent.target_position = player.global_position
 	
-	if distance > 25.0:
+	var distance_to_player = global_position.distance_to(player.global_position)
+	var next_path_position = nav_agent.get_next_path_position()
+	var direction = global_position.direction_to(next_path_position)
+	
+	if distance_to_player > 25.0:
 		velocity = direction * CHASE_SPEED
 	else:
 		velocity = Vector2.ZERO
@@ -104,12 +124,9 @@ func _chase_player():
 
 func _wander(delta):
 	wander_timer += delta
+	nav_agent.target_position = wander_target
 	
-	if is_on_wall() or wander_timer > MAX_WANDER_TIME:
-		_pick_new_wander_target()
-		return
-		
-	if global_position.distance_to(wander_target) < 5.0:
+	if nav_agent.is_navigation_finished() or wander_timer > MAX_WANDER_TIME:
 		velocity = Vector2.ZERO
 		_update_animation(Vector2.ZERO, false)
 		
@@ -120,36 +137,27 @@ func _wander(delta):
 				_pick_new_wander_target()
 				is_waiting = false
 	else:
-		var direction = (wander_target - global_position).normalized()
+		var next_path_position = nav_agent.get_next_path_position()
+		var direction = global_position.direction_to(next_path_position)
+		
 		velocity = direction * WANDER_SPEED
 		_update_animation(direction, true)
 
-# --- OPTIMIERTE ZIELFINDUNG ---
 func _pick_new_wander_target():
-	var space_state = get_world_2d().direct_space_state
-	
-	# Versucht bis zu 5 Mal, einen Punkt ohne Hindernis im Weg zu finden
-	for i in range(5):
+	for i in range(10):
 		var random_x = randf_range(-wander_radius, wander_radius)
 		var random_y = randf_range(-wander_radius, wander_radius)
 		var potential_target = start_position + Vector2(random_x, random_y)
 		
-		# Erstellt die Laser-Abfrage von der aktuellen Position zum Zielpunkt
-		var query = PhysicsRayQueryParameters2D.create(global_position, potential_target)
-		query.exclude = [self] # Ignoriert den eigenen Körper bei der Abfrage
+		nav_agent.target_position = potential_target
 		
-		var result = space_state.intersect_ray(query)
-		
-		# result.is_empty() bedeutet: Der Weg ist absolut frei!
-		if result.is_empty():
+		if nav_agent.is_target_reachable():
 			wander_target = potential_target
 			wander_timer = 0.0
 			return
 			
-	# Wenn nach 5 Versuchen alles blockiert ist, bleibt er sicherheitshalber stehen
 	wander_target = global_position
 	wander_timer = 0.0
-# ----------------------------------------
 
 func _update_animation(direction: Vector2, is_moving: bool):
 	if is_attacking:
@@ -188,12 +196,10 @@ func take_damage(amount):
 	current_health -= amount
 	print("Schädel getroffen! Restliche HP: ", current_health)
 	
-	# Treffer-Feedback (Schädel blinkt rot)
 	var tween = create_tween()
 	tween.tween_property(anim, "modulate", Color.RED, 0.1)
 	tween.tween_property(anim, "modulate", Color.WHITE, 0.1)
 	
-	# Erst sterben, wenn die HP auf 0 oder darunter fallen
 	if current_health <= 0:
 		is_dead = true
 		velocity = Vector2.ZERO 

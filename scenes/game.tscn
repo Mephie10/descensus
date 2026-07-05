@@ -419,13 +419,10 @@ position = Vector2(21, -4)
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=24548395]
 zoom = Vector2(3.5, 3.5)
 
-[node name="Skull" parent="." unique_id=443707851 instance=ExtResource("14_trtic")]
-position = Vector2(117, 110)
-
 [node name="Coins" type="Node" parent="." unique_id=607042871]
 
 [node name="GoldCoin" parent="Coins" unique_id=1481024319 instance=ExtResource("6_p57ef")]
-position = Vector2(152, 105)
+position = Vector2(184, 120)
 
 [node name="SilverCoin" parent="Coins" unique_id=686914885 instance=ExtResource("8_gee14")]
 position = Vector2(85, 105)
@@ -479,3 +476,12 @@ position = Vector2(45, -112)
 
 [node name="SilverBarrel" parent="." unique_id=673399609 instance=ExtResource("9_0tnpc")]
 position = Vector2(84, 47)
+
+[node name="Skull" parent="." unique_id=443707851 instance=ExtResource("14_trtic")]
+position = Vector2(137, 84)
+
+[node name="Skull2" parent="." unique_id=267998650 instance=ExtResource("14_trtic")]
+position = Vector2(134, -45)
+
+[node name="Skull3" parent="." unique_id=570981522 instance=ExtResource("14_trtic")]
+position = Vector2(-24, 100)

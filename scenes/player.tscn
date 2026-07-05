@@ -403,7 +403,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
-size = Vector2(10, 15)
+size = Vector2(14, 17)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f03mx"]
 size = Vector2(17, 48)
@@ -427,7 +427,7 @@ position = Vector2(-1, 8)
 texture = ExtResource("12_3v2ag")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2146914492]
-position = Vector2(-1, 13.5)
+position = Vector2(-1, 12.5)
 shape = SubResource("RectangleShape2D_8upax")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=509753278]
