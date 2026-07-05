@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://35mn584dj84c"]
+
+[ext_resource type="Texture2D" uid="uid://ca684awpoow6y" path="res://assets/Props/Animated/silver_sconce.png" id="1_srxh2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cs7ik"]
+atlas = ExtResource("1_srxh2")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_efp06"]
+atlas = ExtResource("1_srxh2")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xvrg4"]
+atlas = ExtResource("1_srxh2")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8upax"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cs7ik")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_efp06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xvrg4")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 6.0
+}]
+
+[node name="silver_sconce" type="Node2D" unique_id=408966746]
+z_index = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=680401882]
+sprite_frames = SubResource("SpriteFrames_8upax")
+autoplay = "default"

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cltgsk5nonkoi"]
 
-[ext_resource type="Script" uid="uid://bsna8sg6reiup" path="res://scripts/barrel.gd" id="1_n8wf6"]
+[ext_resource type="Script" uid="uid://dv8260ykcmxgb" path="res://scripts/barrel.tscn.gd" id="1_2arrk"]
 [ext_resource type="Texture2D" uid="uid://lxrwnracj0dy" path="res://assets/Props/Static/barrel.png" id="1_ptqd7"]
 [ext_resource type="Texture2D" uid="uid://bgjnj1j2appj4" path="res://assets/Props/Static/debris1.png" id="2_n8wf6"]
 
@@ -10,7 +10,7 @@ size = Vector2(25, 30)
 [node name="Barrel" type="StaticBody2D" unique_id=1372817860 groups=["destructibles"]]
 z_index = 3
 z_as_relative = false
-script = ExtResource("1_n8wf6")
+script = ExtResource("1_2arrk")
 
 [node name="IntactSprite" type="Sprite2D" parent="." unique_id=609285773]
 z_index = 3
@@ -26,3 +26,7 @@ texture = ExtResource("2_n8wf6")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1017807097]
 position = Vector2(0.5, -1)
 shape = SubResource("RectangleShape2D_8upax")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1215998929]
+position = Vector2(0, -1)
+radius = 15.0

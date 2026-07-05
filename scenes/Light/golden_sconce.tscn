@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://cf4w0iy3hjoqs"]
+
+[ext_resource type="Texture2D" uid="uid://bvg4wqiys585x" path="res://assets/Props/Animated/golden_sconce.png" id="1_5p67o"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x6v35"]
+atlas = ExtResource("1_5p67o")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ga6aa"]
+atlas = ExtResource("1_5p67o")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqdpm"]
+atlas = ExtResource("1_5p67o")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8upax"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x6v35")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ga6aa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqdpm")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 6.0
+}]
+
+[node name="golden_sconce" type="Node2D" unique_id=1434347657]
+z_index = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1443842843]
+sprite_frames = SubResource("SpriteFrames_8upax")
+autoplay = "default"
+frame_progress = 0.44598338

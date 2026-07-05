@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://q0v8ycdk7wpj"]
+
+[ext_resource type="Script" uid="uid://bsna8sg6reiup" path="res://scripts/gold_barrel.gd" id="1_3iy0v"]
+[ext_resource type="Texture2D" uid="uid://lxrwnracj0dy" path="res://assets/Props/Static/barrel.png" id="2_s0tla"]
+[ext_resource type="Texture2D" uid="uid://bgjnj1j2appj4" path="res://assets/Props/Static/debris1.png" id="3_u4cm6"]
+[ext_resource type="PackedScene" uid="uid://lptgbd285atg" path="res://scenes/gold_coin.tscn" id="4_ir4g1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
+size = Vector2(25, 30)
+
+[node name="GoldBarrel" type="StaticBody2D" unique_id=1372817860 groups=["destructibles"]]
+z_index = 3
+z_as_relative = false
+script = ExtResource("1_3iy0v")
+
+[node name="IntactSprite" type="Sprite2D" parent="." unique_id=609285773]
+z_index = 3
+z_as_relative = false
+texture = ExtResource("2_s0tla")
+
+[node name="RubbleSprite" type="Sprite2D" parent="." unique_id=434568923]
+visible = false
+z_index = 1
+z_as_relative = false
+texture = ExtResource("3_u4cm6")
+
+[node name="GoldCoin" parent="." unique_id=1481024319 instance=ExtResource("4_ir4g1")]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1017807097]
+position = Vector2(0.5, -1)
+shape = SubResource("RectangleShape2D_8upax")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=798815640]
+position = Vector2(0, -1)
+radius = 15.0
