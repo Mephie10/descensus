@@ -440,7 +440,7 @@ tile_set = SubResource("TileSet_f03mx")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="MapLayers" unique_id=289417392]
 z_index = 4
-tile_map_data = PackedByteArray("AAAGAAAAAQAAAAAAAAD+/wMAAQAAAAEAAAAEAP7/AAADAAAAAAA=")
+tile_map_data = PackedByteArray("AAAGAAAAAQAAAAAAAAAEAP7/AAADAAAAAAA=")
 tile_set = SubResource("TileSet_ye24o")
 
 [node name="Destructibles" type="Node" parent="." unique_id=1676703546]

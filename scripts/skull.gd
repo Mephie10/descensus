@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const CHASE_SPEED = 65.0
+const CHASE_SPEED = 63.0
 const WANDER_SPEED = 30.0
 
 @onready var anim = $AnimatedSprite2D
@@ -23,9 +23,9 @@ var is_attacking = false
 var can_attack = true 
 
 var wander_radius = 60.0
-var detection_radius = 120.0
-var attack_radius = 30.0 
-var attack_cooldown = 1.5 
+var detection_radius = 110.0
+var attack_radius = 27.0 
+var attack_cooldown = 1.25 
 var last_direction = Vector2.DOWN 
 
 var wander_timer = 0.0
@@ -97,9 +97,6 @@ func _attack_player():
 		return
 	
 	if is_instance_valid(player) and player.has_method("take_damage"):
-		# FIX: Keine künstliche Toleranz mehr! Nur wenn der Spieler am Ende 
-		# der Animation wirklich noch innerhalb des attack_radius (30 Pixel) steht, 
-		# nimmt er Schaden. Ein kleiner Schritt zurück rettet dich jetzt.
 		if global_position.distance_to(player.global_position) <= attack_radius:
 			player.take_damage(attack_damage) 
 			

@@ -132,7 +132,6 @@ func take_damage(amount):
 	current_health -= amount
 	print("Spieler getroffen! Aktuelle HP: ", current_health)
 	
-	# Treffer-Feedback: Der Charakter blinkt kurz rot auf
 	var tween = create_tween()
 	tween.tween_property(anim, "modulate", Color.RED, 0.1)
 	tween.tween_property(anim, "modulate", Color.WHITE, 0.1)
@@ -147,17 +146,13 @@ func die():
 	is_dead = true
 	velocity = Vector2.ZERO
 	
-	# Schaltet die Hitbox aus, damit der tote Ritter keine Gegner mehr verletzen kann
 	hitbox_shape.set_deferred("disabled", true)
 	
 	anim.play("death")
 	
-	# Warten, bis der Ritter komplett auf dem Boden liegt
 	await anim.animation_finished
 	
-	# Das versteckte Game Over UI sichtbar machen!
 	$GameOverUI.show()
-
 
 func _on_button_pressed() -> void:
 	get_tree().reload_current_scene()

@@ -33,4 +33,4 @@ shape = SubResource("RectangleShape2D_8upax")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=7417118]
 position = Vector2(0, -1)
-radius = 17.0
+radius = 16.0
