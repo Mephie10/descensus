@@ -142,17 +142,23 @@ func take_damage(amount):
 func die():
 	if is_dead:
 		return
-		
+	
 	is_dead = true
 	velocity = Vector2.ZERO
-	
 	hitbox_shape.set_deferred("disabled", true)
 	
 	anim.play("death")
-	
 	await anim.animation_finished
 	
+	$GameOverUI/FadeContainer.modulate.a = 0.0
 	$GameOverUI.show()
+	
+	var tween = create_tween()
+	tween.tween_property($GameOverUI/FadeContainer, "modulate:a", 1.0, 1.2)
 
-func _on_button_pressed() -> void:
+func _on_restart_button_pressed() -> void:
 	get_tree().reload_current_scene()
+
+
+func _on_quit_button_pressed() -> void:
+	get_tree().quit()

@@ -14,6 +14,12 @@
 [ext_resource type="Texture2D" uid="uid://brbgl56p7js0d" path="res://assets/Characters/Hero_Warrior/shadow.png" id="12_3v2ag"]
 [ext_resource type="Texture2D" uid="uid://3dvfb8yqve6e" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Frame_Standard_02a.png" id="13_jej6c"]
 [ext_resource type="FontFile" uid="uid://j4h2gjx61l27" path="res://assets/Font/TTF (16px)/Toriko.ttf" id="14_f1ej7"]
+[ext_resource type="Texture2D" uid="uid://cljdk63joyny3" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Lock_02a2.png" id="14_oprun"]
+[ext_resource type="Texture2D" uid="uid://c4dxxoxdadq3x" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Press_02a3.png" id="15_60mlk"]
+[ext_resource type="Texture2D" uid="uid://bc27j5ujla23j" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Lock_02a2.png" id="16_fulsm"]
+[ext_resource type="Texture2D" uid="uid://dtt8iku5fxu" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Release_02a2.png" id="16_i4ail"]
+[ext_resource type="Texture2D" uid="uid://b8vea1x6lpf23" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Press_02a3.png" id="19_a38lo"]
+[ext_resource type="Texture2D" uid="uid://ckw3vcvuwn5v" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Release_02a2.png" id="20_i4ail"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4r5pv"]
 atlas = ExtResource("2_d2wvv")
@@ -405,10 +411,13 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
-size = Vector2(14, 17)
+size = Vector2(14, 18)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f03mx"]
 size = Vector2(17, 47)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ye24o"]
+size = Vector2(27, 41)
 
 [node name="Player" type="CharacterBody2D" unique_id=337135565 groups=["player"]]
 z_index = 6
@@ -418,10 +427,8 @@ script = ExtResource("1_3v2ag")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=953661259]
 position = Vector2(-2, -3)
 sprite_frames = SubResource("SpriteFrames_dqkch")
-animation = &"attack_side"
+animation = &"idle_down"
 autoplay = "idle_down"
-frame = 3
-frame_progress = 1.0
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1747031399]
 modulate = Color(1, 1, 1, 0.78431374)
@@ -431,7 +438,7 @@ position = Vector2(-1, 8)
 texture = ExtResource("12_3v2ag")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2146914492]
-position = Vector2(-1, 12.5)
+position = Vector2(-1, 12)
 shape = SubResource("RectangleShape2D_8upax")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=509753278]
@@ -444,21 +451,45 @@ disabled = true
 [node name="GameOverUI" type="CanvasLayer" parent="." unique_id=658818848]
 visible = false
 
-[node name="MenuPanel" type="NinePatchRect" parent="GameOverUI" unique_id=1122348922]
+[node name="FadeContainer" type="Control" parent="GameOverUI" unique_id=1366211110]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="GameOverUI/FadeContainer" unique_id=556861421]
+modulate = Color(1, 1, 1, 0.74509805)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -8.0
+offset_right = 6.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MenuPanel" type="NinePatchRect" parent="GameOverUI/FadeContainer" unique_id=1122348922]
 z_index = 1
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -125.0
-offset_right = 200.0
-offset_bottom = 125.0
+offset_left = -157.625
+offset_top = -117.375
+offset_right = 162.375
+offset_bottom = 122.625
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(4, 4)
-pivot_offset = Vector2(200, 125)
+pivot_offset = Vector2(160, 120)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("13_jej6c")
@@ -470,49 +501,116 @@ patch_margin_bottom = 20
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
-[node name="RestartButton" type="TextureButton" parent="GameOverUI/MenuPanel" unique_id=1074378070]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="QuitButton" type="TextureButton" parent="GameOverUI/MenuPanel" unique_id=589549527]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ColorRect" type="ColorRect" parent="GameOverUI" unique_id=556861421]
-modulate = Color(1, 1, 1, 0.6862745)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -3.0
-offset_right = 6.0
-offset_bottom = -3.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
-
-[node name="Button" type="Button" parent="GameOverUI/ColorRect" unique_id=649479346]
-self_modulate = Color(1, 0, 0.019607844, 1)
-top_level = true
-z_index = 2
+[node name="RestartButton" type="TextureButton" parent="GameOverUI/FadeContainer/MenuPanel" unique_id=1074378070]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -350.0
-offset_top = -80.0
-offset_right = 350.0
-offset_bottom = 80.0
+offset_left = -65.0
+offset_top = -33.625
+offset_right = 65.0
+offset_bottom = 16.375
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(350, 80)
+pivot_offset = Vector2(65, 25)
+texture_normal = ExtResource("14_oprun")
+texture_pressed = ExtResource("16_i4ail")
+texture_hover = ExtResource("15_60mlk")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="GameOverUI/FadeContainer/MenuPanel/RestartButton" unique_id=1299987865]
+modulate = Color(0.5053218, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -16.75
+offset_right = 65.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(65, 19.625)
 theme_override_fonts/font = ExtResource("14_f1ej7")
-theme_override_font_sizes/font_size = 200
-text = "Respawn"
+theme_override_font_sizes/font_size = 32
+text = "Restart"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QuitButton" type="TextureButton" parent="GameOverUI/FadeContainer/MenuPanel" unique_id=589549527]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = 26.375
+offset_right = 40.0
+offset_bottom = 66.375
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 20)
+texture_normal = ExtResource("16_fulsm")
+texture_pressed = ExtResource("20_i4ail")
+texture_hover = ExtResource("19_a38lo")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="GameOverUI/FadeContainer/MenuPanel/QuitButton" unique_id=1479461872]
+modulate = Color(0.5053218, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -14.5
+offset_right = 40.0
+offset_bottom = 25.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 20)
+theme_override_fonts/font = ExtResource("14_f1ej7")
+theme_override_font_sizes/font_size = 32
+text = "EXIT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="GameOverUI/FadeContainer/MenuPanel" unique_id=395401935]
+modulate = Color(0.5053218, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -82.375
+offset_right = 125.0
+offset_bottom = -28.375
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(125, 27)
+theme_override_fonts/font = ExtResource("14_f1ej7")
+theme_override_font_sizes/font_size = 72
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=840686607]
+visible = false
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=588517250]
+position = Vector2(-1.5, 1.5)
+shape = SubResource("RectangleShape2D_ye24o")
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
-[connection signal="pressed" from="GameOverUI/ColorRect/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="GameOverUI/FadeContainer/MenuPanel/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="GameOverUI/FadeContainer/MenuPanel/QuitButton" to="." method="_on_quit_button_pressed"]

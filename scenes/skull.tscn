@@ -396,7 +396,10 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r5bhe"]
-radius = 7.0
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8upax"]
+radius = 12.0
 
 [node name="Skull" type="CharacterBody2D" unique_id=443707851 groups=["enemies"]]
 z_index = 5
@@ -405,12 +408,11 @@ script = ExtResource("1_n2wha")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1120666706]
 sprite_frames = SubResource("SpriteFrames_bkhqn")
-animation = &"run_up"
+animation = &"idle_down"
 autoplay = "idle_side"
-frame_progress = 0.6469722
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=522852783]
-position = Vector2(0, 2)
+position = Vector2(0, 3)
 shape = SubResource("CircleShape2D_r5bhe")
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=703461147]
@@ -422,3 +424,14 @@ texture = ExtResource("7_mferh")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=524840945]
 avoidance_enabled = true
 radius = 8.0
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1340545330]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1191395483]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_8upax")
+disabled = true
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

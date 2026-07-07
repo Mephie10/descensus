@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cw58td3fxpsgl" path="res://scripts/silver_barrel.gd" id="1_fexoa"]
 [ext_resource type="Texture2D" uid="uid://lxrwnracj0dy" path="res://assets/Props/Static/barrel.png" id="2_l37ow"]
-[ext_resource type="Texture2D" uid="uid://bgjnj1j2appj4" path="res://assets/Props/Static/debris1.png" id="3_m5cx8"]
+[ext_resource type="Texture2D" uid="uid://cfdltxdl83h6t" path="res://assets/Props/Static/debris2.png" id="3_fexoa"]
 [ext_resource type="PackedScene" uid="uid://b0v2osxyi0mhb" path="res://scenes/silver_coin.tscn" id="4_l37ow"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
@@ -22,7 +22,7 @@ texture = ExtResource("2_l37ow")
 visible = false
 z_index = 1
 z_as_relative = false
-texture = ExtResource("3_m5cx8")
+texture = ExtResource("3_fexoa")
 
 [node name="SilverCoin" parent="." unique_id=1481024319 instance=ExtResource("4_l37ow")]
 visible = false

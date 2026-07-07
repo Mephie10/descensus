@@ -446,19 +446,22 @@ tile_set = SubResource("TileSet_ye24o")
 [node name="Destructibles" type="Node" parent="." unique_id=1676703546]
 
 [node name="GoldBarrel" parent="Destructibles" unique_id=1372817860 instance=ExtResource("7_u5sy4")]
-position = Vector2(-50, -79)
+position = Vector2(71, 50)
 
 [node name="GoldBarrel2" parent="Destructibles" unique_id=388484881 instance=ExtResource("7_u5sy4")]
-position = Vector2(-20, -79)
+position = Vector2(-48, 71)
 
 [node name="GoldBarrel3" parent="Destructibles" unique_id=1127360209 instance=ExtResource("7_u5sy4")]
-position = Vector2(-50, -47)
+position = Vector2(-49, -79)
 
 [node name="SilverBarrel" parent="Destructibles" unique_id=1739293258 instance=ExtResource("9_0tnpc")]
-position = Vector2(-48, 71)
+position = Vector2(-19, -79)
 
 [node name="SilverBarrel2" parent="Destructibles" unique_id=673655378 instance=ExtResource("9_0tnpc")]
 position = Vector2(-48, 38)
+
+[node name="SilverBarrel3" parent="Destructibles" unique_id=673399609 instance=ExtResource("9_0tnpc")]
+position = Vector2(-49, -47)
 
 [node name="AnimatedProps" type="Node" parent="." unique_id=931598572]
 
@@ -474,14 +477,20 @@ position = Vector2(-16, -113)
 [node name="magic_torch" parent="AnimatedProps" unique_id=1328690673 instance=ExtResource("13_kvuet")]
 position = Vector2(45, -112)
 
-[node name="SilverBarrel" parent="." unique_id=673399609 instance=ExtResource("9_0tnpc")]
-position = Vector2(84, 47)
+[node name="Enemies" type="Node" parent="." unique_id=804086061]
 
-[node name="Skull" parent="." unique_id=443707851 instance=ExtResource("14_trtic")]
+[node name="Skull" parent="Enemies" unique_id=443707851 instance=ExtResource("14_trtic")]
 position = Vector2(137, 84)
 
-[node name="Skull2" parent="." unique_id=267998650 instance=ExtResource("14_trtic")]
+[node name="Skull2" parent="Enemies" unique_id=267998650 instance=ExtResource("14_trtic")]
 position = Vector2(134, -45)
 
-[node name="Skull3" parent="." unique_id=570981522 instance=ExtResource("14_trtic")]
+[node name="Skull3" parent="Enemies" unique_id=570981522 instance=ExtResource("14_trtic")]
 position = Vector2(-24, 100)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1431732409]
+offset_left = -814.0
+offset_top = -477.0
+offset_right = 902.0
+offset_bottom = 637.0
+color = Color(0.07058824, 0.07058824, 0.08627451, 1)

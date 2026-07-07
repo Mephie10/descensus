@@ -6,6 +6,7 @@ const WANDER_SPEED = 30.0
 @onready var anim = $AnimatedSprite2D
 @onready var collision = $CollisionShape2D
 @onready var nav_agent = $NavigationAgent2D
+@onready var hitbox_collision = $Hitbox/CollisionShape2D
 
 var player = null
 var is_dead = false
@@ -24,7 +25,7 @@ var can_attack = true
 
 var wander_radius = 60.0
 var detection_radius = 110.0
-var attack_radius = 27.0 
+var attack_radius = 35.0
 var attack_cooldown = 1.25 
 var last_direction = Vector2.DOWN 
 
@@ -47,6 +48,17 @@ func _on_safe_velocity_computed(safe_velocity: Vector2):
 
 	velocity = safe_velocity
 	move_and_slide()
+
+	for i in get_slide_collision_count():
+		var slide_col = get_slide_collision(i)
+		
+		if slide_col.get_collider() == player:
+			
+			if not is_chasing and not is_attacking:
+				_pick_new_wander_target()
+				
+			velocity = Vector2.ZERO
+			break
 
 func _physics_process(delta):
 	if is_dead:
@@ -90,16 +102,21 @@ func _attack_player():
 	elif direction.y < 0:
 		anim.play("attack_up")
 		anim.flip_h = false
-		
-	await anim.animation_finished
+	
+	velocity = direction * (CHASE_SPEED * 2.5)
+	
+	await get_tree().create_timer(0.20).timeout
 	
 	if is_dead:
 		return
 	
-	if is_instance_valid(player) and player.has_method("take_damage"):
-		if global_position.distance_to(player.global_position) <= attack_radius:
-			player.take_damage(attack_damage) 
-			
+	hitbox_collision.set_deferred("disabled", false)
+	await get_tree().physics_frame 
+	await get_tree().physics_frame 
+	hitbox_collision.set_deferred("disabled", true)
+	
+	velocity = Vector2.ZERO 
+	await anim.animation_finished
 	is_attacking = false 
 	
 	await get_tree().create_timer(attack_cooldown).timeout
@@ -112,7 +129,7 @@ func _chase_player():
 	var next_path_position = nav_agent.get_next_path_position()
 	var direction = global_position.direction_to(next_path_position)
 	
-	if distance_to_player > 25.0:
+	if distance_to_player > 28.0:
 		velocity = direction * CHASE_SPEED
 	else:
 		velocity = Vector2.ZERO
@@ -206,3 +223,10 @@ func take_damage(amount):
 		
 		await anim.animation_finished
 		queue_free()
+
+
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	if area.name == "Hurtbox":
+		var hit_player = area.get_parent() 
+		if hit_player.has_method("take_damage"):
+			hit_player.take_damage(attack_damage)
