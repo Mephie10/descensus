@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const CHASE_SPEED = 63.0
+const CHASE_SPEED = 60.0
 const WANDER_SPEED = 30.0
 
 @onready var anim = $AnimatedSprite2D
@@ -12,9 +12,8 @@ var player = null
 var is_dead = false
 var max_health = 30.0
 var current_health = 30.0
-var attack_damage = 15.0
+var attack_damage = 10.0
 
-# --- KI Variablen ---
 var start_position: Vector2
 var wander_target: Vector2
 var is_chasing = false
@@ -25,8 +24,8 @@ var can_attack = true
 
 var wander_radius = 60.0
 var detection_radius = 110.0
-var attack_radius = 35.0
-var attack_cooldown = 1.25 
+var attack_radius = 40.0
+var attack_cooldown = 1.25
 var last_direction = Vector2.DOWN 
 
 var wander_timer = 0.0
@@ -43,7 +42,8 @@ func _setup_navigation():
 	_pick_new_wander_target()
 
 func _on_safe_velocity_computed(safe_velocity: Vector2):
-	if is_dead:
+	
+	if is_dead or is_attacking:
 		return
 
 	velocity = safe_velocity
@@ -51,12 +51,9 @@ func _on_safe_velocity_computed(safe_velocity: Vector2):
 
 	for i in get_slide_collision_count():
 		var slide_col = get_slide_collision(i)
-		
 		if slide_col.get_collider() == player:
-			
 			if not is_chasing and not is_attacking:
 				_pick_new_wander_target()
-				
 			velocity = Vector2.ZERO
 			break
 
@@ -78,12 +75,20 @@ func _physics_process(delta):
 	else:
 		is_chasing = false
 
-	if is_chasing:
-		_chase_player()
+	if is_attacking:
+		if is_instance_valid(player):
+			var current_dist = global_position.distance_to(player.global_position)
+			if current_dist <= 22.0:
+				velocity = Vector2.ZERO
+		
+		move_and_slide()
+		
 	else:
-		_wander(delta) 
-
-	if not is_dead:
+		if is_chasing:
+			_chase_player()
+		else:
+			_wander(delta) 
+		
 		nav_agent.velocity = velocity
 
 func _attack_player():
@@ -103,19 +108,20 @@ func _attack_player():
 		anim.play("attack_up")
 		anim.flip_h = false
 	
-	velocity = direction * (CHASE_SPEED * 2.5)
+	velocity = direction * (CHASE_SPEED * 1.4)
 	
-	await get_tree().create_timer(0.20).timeout
+	await get_tree().create_timer(0.30).timeout
 	
 	if is_dead:
 		return
+	
+	velocity = Vector2.ZERO 
 	
 	hitbox_collision.set_deferred("disabled", false)
 	await get_tree().physics_frame 
 	await get_tree().physics_frame 
 	hitbox_collision.set_deferred("disabled", true)
 	
-	velocity = Vector2.ZERO 
 	await anim.animation_finished
 	is_attacking = false 
 	
@@ -129,7 +135,7 @@ func _chase_player():
 	var next_path_position = nav_agent.get_next_path_position()
 	var direction = global_position.direction_to(next_path_position)
 	
-	if distance_to_player > 28.0:
+	if distance_to_player > 32.0:
 		velocity = direction * CHASE_SPEED
 	else:
 		velocity = Vector2.ZERO
@@ -211,7 +217,7 @@ func take_damage(amount):
 	print("Schädel getroffen! Restliche HP: ", current_health)
 	
 	var tween = create_tween()
-	tween.tween_property(anim, "modulate", Color.RED, 0.1)
+	tween.tween_property(anim, "modulate", Color.RED, 0.15)
 	tween.tween_property(anim, "modulate", Color.WHITE, 0.1)
 	
 	if current_health <= 0:

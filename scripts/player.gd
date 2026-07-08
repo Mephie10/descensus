@@ -6,6 +6,9 @@ const SPEED = 110.0
 @onready var hitbox = $Hitbox 
 @onready var hitbox_shape = $Hitbox/CollisionShape2D 
 @onready var shadow = $Shadow 
+@onready var health_bar = $HUD/HealthFrame/HealthBar
+@onready var hud = $HUD
+
 
 var last_dir = "down" 
 var is_attacking = false
@@ -13,6 +16,7 @@ var max_health = 100.0
 var current_health = 100.0
 var attack_damage = 25.0
 var is_dead = false
+var low_hp_tween: Tween = null
 
 func _process(_delta):
 	if is_dead:
@@ -132,8 +136,13 @@ func take_damage(amount):
 	current_health -= amount
 	print("Spieler getroffen! Aktuelle HP: ", current_health)
 	
+	health_bar.value = current_health
+	
+	if current_health <= 20.0 and not is_dead:
+		_start_low_hp_blink()
+	
 	var tween = create_tween()
-	tween.tween_property(anim, "modulate", Color.RED, 0.1)
+	tween.tween_property(anim, "modulate", Color.RED, 0.15)
 	tween.tween_property(anim, "modulate", Color.WHITE, 0.1)
 	
 	if current_health <= 0:
@@ -147,6 +156,10 @@ func die():
 	velocity = Vector2.ZERO
 	hitbox_shape.set_deferred("disabled", true)
 	
+	if low_hp_tween:
+		low_hp_tween.kill()
+	$HUD/HealthFrame.modulate = Color.WHITE
+	
 	anim.play("death")
 	await anim.animation_finished
 	
@@ -154,7 +167,7 @@ func die():
 	$GameOverUI.show()
 	
 	var tween = create_tween()
-	tween.tween_property($GameOverUI/FadeContainer, "modulate:a", 1.0, 1.2)
+	tween.tween_property($GameOverUI/FadeContainer, "modulate:a", 1.0, 1.4)
 
 func _on_restart_button_pressed() -> void:
 	get_tree().reload_current_scene()
@@ -162,3 +175,17 @@ func _on_restart_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
+	
+func _ready():
+	hud.show()
+	health_bar.max_value = max_health
+	health_bar.value = current_health
+
+func _start_low_hp_blink():
+	if low_hp_tween and low_hp_tween.is_valid():
+		return
+		
+	var health_frame = $HUD/HealthFrame
+	low_hp_tween = create_tween().set_loops()
+	low_hp_tween.tween_property(health_frame, "modulate", Color(1.0, 0.3, 0.3), 0.6)
+	low_hp_tween.tween_property(health_frame, "modulate", Color.WHITE, 0.6)

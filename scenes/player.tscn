@@ -20,6 +20,8 @@
 [ext_resource type="Texture2D" uid="uid://dtt8iku5fxu" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Release_02a2.png" id="16_i4ail"]
 [ext_resource type="Texture2D" uid="uid://b8vea1x6lpf23" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Press_02a3.png" id="19_a38lo"]
 [ext_resource type="Texture2D" uid="uid://ckw3vcvuwn5v" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Release_02a2.png" id="20_i4ail"]
+[ext_resource type="PackedScene" uid="uid://kicr8bre3kba" path="res://scenes/pause_menu.tscn" id="21_i4ail"]
+[ext_resource type="Texture2D" uid="uid://dtij8mr7yvvlb" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Fillbar_Hollow_01b.png" id="22_4ni07"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4r5pv"]
 atlas = ExtResource("2_d2wvv")
@@ -417,12 +419,19 @@ size = Vector2(14, 18)
 size = Vector2(17, 47)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye24o"]
-size = Vector2(27, 41)
+size = Vector2(27, 39)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a38lo"]
+load_path = "res://.godot/imported/UI_Stone_Fillbar_Filler_Red_01a.png-9780b4a7ee2bff5ed45fd4d9eea9be54.ctex"
 
 [node name="Player" type="CharacterBody2D" unique_id=337135565 groups=["player"]]
 z_index = 6
 collision_layer = 2
 script = ExtResource("1_3v2ag")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1821007735]
+position = Vector2(-1, 0)
+zoom = Vector2(3.5, 3.5)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=953661259]
 position = Vector2(-2, -3)
@@ -448,6 +457,47 @@ position = Vector2(-1.5, -1.5)
 shape = SubResource("RectangleShape2D_f03mx")
 disabled = true
 
+[node name="Hurtbox" type="Area2D" parent="." unique_id=840686607]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=588517250]
+position = Vector2(-1.5, 1.5)
+shape = SubResource("RectangleShape2D_ye24o")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1021850578]
+visible = false
+
+[node name="HealthFrame" type="TextureRect" parent="HUD" unique_id=235555109]
+offset_left = 170.0
+offset_top = 36.0
+offset_right = 210.0
+offset_bottom = 76.0
+scale = Vector2(8, 8)
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("22_4ni07")
+
+[node name="HealthBar" type="TextureProgressBar" parent="HUD/HealthFrame" unique_id=1184539726]
+z_index = 1
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -17.25
+offset_top = -16.25
+offset_right = 5.75
+offset_bottom = 5.083
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+value = 100.0
+nine_patch_stretch = true
+texture_progress = SubResource("CompressedTexture2D_a38lo")
+texture_progress_offset = Vector2(-0.15, 0)
+
 [node name="GameOverUI" type="CanvasLayer" parent="." unique_id=658818848]
 visible = false
 
@@ -465,10 +515,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = -8.0
-offset_right = 6.0
-offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -537,7 +583,7 @@ grow_vertical = 2
 pivot_offset = Vector2(65, 19.625)
 theme_override_fonts/font = ExtResource("14_f1ej7")
 theme_override_font_sizes/font_size = 32
-text = "Restart"
+text = "RESTART"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -602,14 +648,7 @@ text = "GAME OVER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Hurtbox" type="Area2D" parent="." unique_id=840686607]
-visible = false
-collision_layer = 2
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=588517250]
-position = Vector2(-1.5, 1.5)
-shape = SubResource("RectangleShape2D_ye24o")
+[node name="PauseMenu" parent="." unique_id=942095560 instance=ExtResource("21_i4ail")]
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="pressed" from="GameOverUI/FadeContainer/MenuPanel/RestartButton" to="." method="_on_restart_button_pressed"]
