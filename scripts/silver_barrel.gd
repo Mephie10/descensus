@@ -20,3 +20,7 @@ func smash():
 	$NavigationObstacle2D.avoidance_enabled = false
 	
 	collision.set_deferred("disabled", true)
+
+func _ready():
+	if Global.destroyed_objects.has(str(get_path())):
+		queue_free()

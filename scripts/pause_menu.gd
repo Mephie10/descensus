@@ -27,7 +27,7 @@ func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
 
-func _on_restart_button_pressed() -> void:
-	get_tree().paused = false 
-	hide() 
-	get_tree().reload_current_scene()
+func _on_restart_button_pressed():
+	Global.load_checkpoint()
+	get_tree().paused = false  
+	TransitionScreen.reload_scene()

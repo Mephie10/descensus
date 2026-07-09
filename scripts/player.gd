@@ -6,8 +6,9 @@ const SPEED = 110.0
 @onready var hitbox = $Hitbox 
 @onready var hitbox_shape = $Hitbox/CollisionShape2D 
 @onready var shadow = $Shadow 
-@onready var health_bar = $HUD/HealthFrame/HealthBar
+@onready var health_bar = $HUD/HealthBar
 @onready var hud = $HUD
+@onready var coin_label = $HUD/CoinLabel
 
 
 var last_dir = "down" 
@@ -17,6 +18,7 @@ var current_health = 100.0
 var attack_damage = 25.0
 var is_dead = false
 var low_hp_tween: Tween = null
+var total_coins = 0
 
 func _process(_delta):
 	if is_dead:
@@ -134,6 +136,7 @@ func _on_hitbox_body_entered(body):
 		
 func take_damage(amount):
 	current_health -= amount
+	Global.player_current_health = current_health
 	print("Spieler getroffen! Aktuelle HP: ", current_health)
 	
 	health_bar.value = current_health
@@ -169,8 +172,11 @@ func die():
 	var tween = create_tween()
 	tween.tween_property($GameOverUI/FadeContainer, "modulate:a", 1.0, 1.4)
 
-func _on_restart_button_pressed() -> void:
-	get_tree().reload_current_scene()
+func _on_restart_button_pressed():
+	Global.load_checkpoint()
+	
+	get_tree().paused = false 
+	TransitionScreen.reload_scene()
 
 
 func _on_quit_button_pressed() -> void:
@@ -178,8 +184,13 @@ func _on_quit_button_pressed() -> void:
 	
 func _ready():
 	hud.show()
+	
+	current_health = Global.player_current_health
+	total_coins = Global.player_total_coins
+	
 	health_bar.max_value = max_health
 	health_bar.value = current_health
+	coin_label.text = str(total_coins)
 
 func _start_low_hp_blink():
 	if low_hp_tween and low_hp_tween.is_valid():
@@ -189,3 +200,9 @@ func _start_low_hp_blink():
 	low_hp_tween = create_tween().set_loops()
 	low_hp_tween.tween_property(health_frame, "modulate", Color(1.0, 0.3, 0.3), 0.6)
 	low_hp_tween.tween_property(health_frame, "modulate", Color.WHITE, 0.6)
+	
+func add_coins(amount):
+	total_coins += amount
+	Global.player_total_coins = total_coins
+	coin_label.text = str(total_coins)
+	print("Münzen gesammelt! Aktueller Stand: ", total_coins)

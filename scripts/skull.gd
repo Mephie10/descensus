@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends BaseEnemy
 
 const CHASE_SPEED = 60.0
 const WANDER_SPEED = 30.0
@@ -11,7 +11,6 @@ const WANDER_SPEED = 30.0
 var player = null
 var is_dead = false
 var max_health = 30.0
-var current_health = 30.0
 var attack_damage = 10.0
 
 var start_position: Vector2
@@ -29,7 +28,10 @@ var attack_cooldown = 1.25
 var last_direction = Vector2.DOWN 
 
 var wander_timer = 0.0
-const MAX_WANDER_TIME = 4.0 
+const MAX_WANDER_TIME = 4.0
+
+func _init():
+	current_health = 30.0 
 
 func _ready():
 	player = get_tree().get_first_node_in_group("player")

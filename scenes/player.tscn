@@ -14,8 +14,10 @@
 [ext_resource type="Texture2D" uid="uid://brbgl56p7js0d" path="res://assets/Characters/Hero_Warrior/shadow.png" id="12_3v2ag"]
 [ext_resource type="Texture2D" uid="uid://3dvfb8yqve6e" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Frame_Standard_02a.png" id="13_jej6c"]
 [ext_resource type="FontFile" uid="uid://j4h2gjx61l27" path="res://assets/Font/TTF (16px)/Toriko.ttf" id="14_f1ej7"]
+[ext_resource type="Texture2D" uid="uid://ciuyrka8ihotb" path="res://assets/Items/Animated/Frames/Gold_coin/00.png" id="14_l71n6"]
 [ext_resource type="Texture2D" uid="uid://cljdk63joyny3" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Lock_02a2.png" id="14_oprun"]
 [ext_resource type="Texture2D" uid="uid://c4dxxoxdadq3x" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Press_02a3.png" id="15_60mlk"]
+[ext_resource type="Texture2D" uid="uid://1igvltjcea3v" path="res://assets/Items/Animated/Frames/Silver_coin/00.png" id="15_ke2ow"]
 [ext_resource type="Texture2D" uid="uid://bc27j5ujla23j" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Lock_02a2.png" id="16_fulsm"]
 [ext_resource type="Texture2D" uid="uid://dtt8iku5fxu" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Release_02a2.png" id="16_i4ail"]
 [ext_resource type="Texture2D" uid="uid://b8vea1x6lpf23" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Press_02a3.png" id="19_a38lo"]
@@ -431,7 +433,7 @@ script = ExtResource("1_3v2ag")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1821007735]
 position = Vector2(-1, 0)
-zoom = Vector2(3.5, 3.5)
+zoom = Vector2(3.75, 3.75)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=953661259]
 position = Vector2(-2, -3)
@@ -451,6 +453,7 @@ position = Vector2(-1, 12)
 shape = SubResource("RectangleShape2D_8upax")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=509753278]
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=970118499]
 position = Vector2(-1.5, -1.5)
@@ -469,34 +472,62 @@ shape = SubResource("RectangleShape2D_ye24o")
 visible = false
 
 [node name="HealthFrame" type="TextureRect" parent="HUD" unique_id=235555109]
-offset_left = 170.0
-offset_top = 36.0
-offset_right = 210.0
-offset_bottom = 76.0
+offset_left = 204.0
+offset_top = 68.0
+offset_right = 249.75
+offset_bottom = 107.25
 scale = Vector2(8, 8)
 pivot_offset = Vector2(20, 20)
 texture = ExtResource("22_4ni07")
 
-[node name="HealthBar" type="TextureProgressBar" parent="HUD/HealthFrame" unique_id=1184539726]
+[node name="HealthBar" type="TextureProgressBar" parent="HUD" unique_id=1184539726]
 z_index = 1
 z_as_relative = false
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -17.25
-offset_top = -16.25
-offset_right = 5.75
-offset_bottom = 5.083
+offset_left = -1196.0
+offset_top = -791.0
+offset_right = -982.42993
+offset_bottom = -582.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.5, 1.5)
 value = 100.0
 nine_patch_stretch = true
 texture_progress = SubResource("CompressedTexture2D_a38lo")
-texture_progress_offset = Vector2(-0.15, 0)
+texture_progress_offset = Vector2(1.85, -0.5)
+
+[node name="CoinLabel" type="Label" parent="HUD" unique_id=1549914027]
+offset_left = 184.0
+offset_top = 176.0
+offset_right = 289.0
+offset_bottom = 266.0
+pivot_offset = Vector2(50.25, 45)
+theme_override_fonts/font = ExtResource("14_f1ej7")
+theme_override_font_sizes/font_size = 120
+text = "00"
+
+[node name="GoldIcon" type="TextureRect" parent="HUD" unique_id=1188060725]
+offset_left = -8.0
+offset_top = 88.0
+offset_right = 282.0
+offset_bottom = 308.0
+texture = ExtResource("14_l71n6")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SilverIcon" type="TextureRect" parent="HUD/GoldIcon" unique_id=678694864]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 64.0
+offset_right = 208.0
+offset_bottom = 192.0
+texture = ExtResource("15_ke2ow")
+expand_mode = 1
+stretch_mode = 4
 
 [node name="GameOverUI" type="CanvasLayer" parent="." unique_id=658818848]
 visible = false

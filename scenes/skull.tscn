@@ -403,6 +403,7 @@ radius = 8.0
 [node name="Skull" type="CharacterBody2D" unique_id=443707851 groups=["enemies"]]
 z_index = 5
 z_as_relative = false
+collision_mask = 3
 script = ExtResource("1_n2wha")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1120666706]
