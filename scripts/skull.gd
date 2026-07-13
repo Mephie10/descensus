@@ -34,6 +34,10 @@ func _init():
 	current_health = 30.0 
 
 func _ready():
+	super() 
+	if is_queued_for_deletion():
+		return
+	
 	player = get_tree().get_first_node_in_group("player")
 	start_position = global_position
 	nav_agent.velocity_computed.connect(_on_safe_velocity_computed)
@@ -234,7 +238,7 @@ func take_damage(amount):
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area.name == "Hurtbox":
-		var hit_player = area.get_parent() 
-		if hit_player.has_method("take_damage"):
-			hit_player.take_damage(attack_damage)
+		if area.name == "Hurtbox":
+			var hit_player = area.get_parent() 
+			if hit_player.has_method("take_damage"):
+				hit_player.take_damage(attack_damage)

@@ -6,6 +6,3 @@ func _on_body_entered(body):
 			body.add_coins(1)
 			queue_free()
 			
-func _ready():
-	if Global.destroyed_objects.has(str(get_path())):
-		queue_free()

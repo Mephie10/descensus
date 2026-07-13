@@ -438,7 +438,7 @@ zoom = Vector2(3.75, 3.75)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=953661259]
 position = Vector2(-2, -3)
 sprite_frames = SubResource("SpriteFrames_dqkch")
-animation = &"idle_down"
+animation = &"attack_down"
 autoplay = "idle_down"
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1747031399]

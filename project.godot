@@ -33,6 +33,7 @@ window/stretch/aspect="expand"
 destructibles=""
 player=""
 enemies=""
+coins=""
 
 [input]
 
