@@ -9,14 +9,16 @@ func _unhandled_input(event):
 		toggle_pause()
 
 func toggle_pause():
-	
+
 	var is_paused = not get_tree().paused
 	get_tree().paused = is_paused
-	
+
 	if is_paused:
-		show() 
+		show()
+		Global.set_menu_cursor()
 	else:
 		hide()
+		Global.set_gameplay_cursor()
 
 
 func _on_resume_button_pressed() -> void:
@@ -29,5 +31,6 @@ func _on_quit_button_pressed() -> void:
 
 func _on_restart_button_pressed():
 	Global.load_checkpoint()
-	get_tree().paused = false  
+	get_tree().paused = false
+	Global.set_gameplay_cursor()
 	TransitionScreen.reload_scene()

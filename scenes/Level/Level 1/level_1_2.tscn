@@ -9,7 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://cltgsk5nonkoi" path="res://scenes/Barrels/barrel.tscn" id="7_s8ao2"]
 [ext_resource type="PackedScene" uid="uid://d4je1lwidqmf1" path="res://scenes/Barrels/barrel_silver_coin.tscn" id="8_i3346"]
 [ext_resource type="PackedScene" uid="uid://cf4w0iy3hjoqs" path="res://scenes/Light/golden_sconce.tscn" id="9_017ip"]
-[ext_resource type="PackedScene" uid="uid://beoyoc48xpq8" path="res://scenes/skull.tscn" id="11_s8ao2"]
+[ext_resource type="PackedScene" uid="uid://bxwexyv54jjop" path="res://scenes/skeleton_warrior.tscn" id="10_dxb8h"]
+[ext_resource type="PackedScene" uid="uid://cxakpta00hkn" path="res://scenes/Chests/golden_chest.tscn" id="11_s8ao2"]
+[ext_resource type="PackedScene" uid="uid://jq0gcnhq3tyw" path="res://scenes/Level/door.tscn" id="12_i3346"]
+[ext_resource type="PackedScene" uid="uid://cspbrenytwko8" path="res://scenes/skeleton_archer.tscn" id="13_archer"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_trtic"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -410,7 +413,7 @@ sources/1 = SubResource("TileSetAtlasSource_t2ct2")
 [node name="Level1_2" type="Node2D" unique_id=2033195073]
 
 [node name="Player" parent="." unique_id=337135565 instance=ExtResource("1_s68pt")]
-position = Vector2(-84, 43)
+position = Vector2(13, 48)
 
 [node name="Coins" type="Node" parent="." unique_id=1635827555]
 
@@ -448,12 +451,40 @@ position = Vector2(-54, -50)
 
 [node name="Enemies" type="Node" parent="." unique_id=1184464848]
 
-[node name="Skull" parent="Enemies" unique_id=443707851 instance=ExtResource("11_s8ao2")]
-position = Vector2(98, 45)
-
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1929018793]
 offset_left = -817.0
 offset_top = -470.0
 offset_right = 899.0
 offset_bottom = 644.0
 color = Color(0.07058824, 0.07058824, 0.08627451, 1)
+
+[node name="SkeletonWarrior" parent="." unique_id=1024088533 instance=ExtResource("10_dxb8h")]
+position = Vector2(100, 57)
+
+[node name="SkeletonArcher" parent="." unique_id=-1910256740 instance=ExtResource("13_archer")]
+position = Vector2(140, -2)
+
+[node name="GoldenChest" parent="." unique_id=1199433031 instance=ExtResource("11_s8ao2")]
+position = Vector2(-21, -15)
+coin_reward = 10
+healing_flask_reward = 1
+
+[node name="Door" parent="." unique_id=1602873714 instance=ExtResource("12_i3346")]
+position = Vector2(-101, 50)
+next_sublevel_path = "uid://d37ay6saq8cqt"
+spawn_id = "level1_2_door"
+target_spawn_id = "level1_1_door"
+
+[node name="BronzeLock" parent="Door" index="1" unique_id=1837955568]
+position = Vector2(-11, 0)
+
+[node name="SilverLock" parent="Door" index="2" unique_id=577668625]
+position = Vector2(-11, 0)
+
+[node name="GoldenLock" parent="Door" index="3" unique_id=1222097686]
+position = Vector2(-11, 0)
+
+[node name="SpawnPoint" parent="Door" index="4" unique_id=1925442304]
+position = Vector2(12, 0)
+
+[editable path="Door"]

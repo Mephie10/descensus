@@ -20,6 +20,8 @@
 [ext_resource type="Texture2D" uid="uid://1igvltjcea3v" path="res://assets/Items/Animated/Frames/Silver_coin/00.png" id="15_ke2ow"]
 [ext_resource type="Texture2D" uid="uid://bc27j5ujla23j" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Lock_02a2.png" id="16_fulsm"]
 [ext_resource type="Texture2D" uid="uid://dtt8iku5fxu" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Release_02a2.png" id="16_i4ail"]
+[ext_resource type="Texture2D" uid="uid://c2mjhjccv1b6s" path="res://assets/Items/Static/health_potion.png" id="17_ke2ow"]
+[ext_resource type="Texture2D" uid="uid://q10dahlvtcfk" path="res://assets/Items/Static/bronze_key.png" id="18_ujl30"]
 [ext_resource type="Texture2D" uid="uid://b8vea1x6lpf23" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Press_02a3.png" id="19_a38lo"]
 [ext_resource type="Texture2D" uid="uid://ckw3vcvuwn5v" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Release_02a2.png" id="20_i4ail"]
 [ext_resource type="PackedScene" uid="uid://kicr8bre3kba" path="res://scenes/pause_menu.tscn" id="21_i4ail"]
@@ -438,7 +440,7 @@ zoom = Vector2(3.75, 3.75)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=953661259]
 position = Vector2(-2, -3)
 sprite_frames = SubResource("SpriteFrames_dqkch")
-animation = &"attack_down"
+animation = &"idle_down"
 autoplay = "idle_down"
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1747031399]
@@ -483,17 +485,10 @@ texture = ExtResource("22_4ni07")
 [node name="HealthBar" type="TextureProgressBar" parent="HUD" unique_id=1184539726]
 z_index = 1
 z_as_relative = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1196.0
-offset_top = -791.0
-offset_right = -982.42993
-offset_bottom = -582.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 84.0
+offset_top = -71.0
+offset_right = 297.57007
+offset_bottom = 138.0
 scale = Vector2(1.5, 1.5)
 value = 100.0
 nine_patch_stretch = true
@@ -528,6 +523,69 @@ offset_bottom = 192.0
 texture = ExtResource("15_ke2ow")
 expand_mode = 1
 stretch_mode = 4
+
+[node name="HealingFlask1" type="TextureRect" parent="HUD" unique_id=541841505]
+visible = false
+offset_left = 448.0
+offset_top = 48.0
+offset_right = 488.0
+offset_bottom = 88.0
+scale = Vector2(2, 2)
+texture = ExtResource("17_ke2ow")
+
+[node name="HealingFlask2" type="TextureRect" parent="HUD" unique_id=127324051]
+visible = false
+offset_left = 520.0
+offset_top = 48.0
+offset_right = 560.0
+offset_bottom = 88.0
+scale = Vector2(2, 2)
+texture = ExtResource("17_ke2ow")
+
+[node name="Key1" type="TextureRect" parent="HUD" unique_id=595036432]
+visible = false
+offset_left = 64.0
+offset_top = 256.0
+offset_right = 104.0
+offset_bottom = 296.0
+scale = Vector2(2.25, 2.25)
+texture = ExtResource("18_ujl30")
+
+[node name="Key2" type="TextureRect" parent="HUD" unique_id=295687254]
+visible = false
+offset_left = 176.0
+offset_top = 256.0
+offset_right = 216.0
+offset_bottom = 296.0
+scale = Vector2(2.25, 2.25)
+texture = ExtResource("18_ujl30")
+
+[node name="Key3" type="TextureRect" parent="HUD" unique_id=127340622]
+visible = false
+offset_left = 288.0
+offset_top = 256.0
+offset_right = 328.0
+offset_bottom = 296.0
+scale = Vector2(2.25, 2.25)
+texture = ExtResource("18_ujl30")
+
+[node name="Key4" type="TextureRect" parent="HUD" unique_id=325210204]
+visible = false
+offset_left = 400.0
+offset_top = 256.0
+offset_right = 440.0
+offset_bottom = 296.0
+scale = Vector2(2.25, 2.25)
+texture = ExtResource("18_ujl30")
+
+[node name="Key5" type="TextureRect" parent="HUD" unique_id=1415229329]
+visible = false
+offset_left = 512.0
+offset_top = 256.0
+offset_right = 552.0
+offset_bottom = 296.0
+scale = Vector2(2.25, 2.25)
+texture = ExtResource("18_ujl30")
 
 [node name="GameOverUI" type="CanvasLayer" parent="." unique_id=658818848]
 visible = false

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dv8260ykcmxgb" path="res://scripts/barrel.tscn.gd" id="1_2arrk"]
 [ext_resource type="Texture2D" uid="uid://lxrwnracj0dy" path="res://assets/Props/Static/barrel.png" id="1_ptqd7"]
 [ext_resource type="Texture2D" uid="uid://bgjnj1j2appj4" path="res://assets/Props/Static/debris1.png" id="2_n8wf6"]
+[ext_resource type="Texture2D" uid="uid://clvybfbh2i2q4" path="res://assets/Props/Static/barrel_shadow.png" id="4_n1o4k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
 size = Vector2(25, 30)
@@ -22,6 +23,12 @@ visible = false
 z_index = 1
 z_as_relative = false
 texture = ExtResource("2_n8wf6")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1484623023]
+modulate = Color(1, 1, 1, 0.78431374)
+z_index = 2
+z_as_relative = false
+texture = ExtResource("4_n1o4k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1017807097]
 position = Vector2(0.5, -1)

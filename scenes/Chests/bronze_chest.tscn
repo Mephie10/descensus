@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://b1jjtl7w0ukvd"]
+
+[ext_resource type="Texture2D" uid="uid://knb1xhxwa78o" path="res://assets/Props/Static/bronze_chest_closed.png" id="1_65cje"]
+[ext_resource type="Script" uid="uid://djspdpgdyg844" path="res://scripts/bronze_chest.gd" id="1_kdy3x"]
+[ext_resource type="Texture2D" uid="uid://caoqmycffqe26" path="res://assets/Props/Static/bronze_chest_open.png" id="2_42mtx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
+size = Vector2(30, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f03mx"]
+size = Vector2(46, 45)
+
+[node name="BronzeChest" type="StaticBody2D" unique_id=1199433031]
+z_index = 3
+z_as_relative = false
+script = ExtResource("1_kdy3x")
+
+[node name="Closed" type="Sprite2D" parent="." unique_id=1090317393]
+texture = ExtResource("1_65cje")
+
+[node name="Opened" type="Sprite2D" parent="." unique_id=568074450]
+visible = false
+position = Vector2(0, -8)
+texture = ExtResource("2_42mtx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1048961880]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_8upax")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="InteractionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=2040292931]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_f03mx")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=604743180]
+radius = 17.0
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]

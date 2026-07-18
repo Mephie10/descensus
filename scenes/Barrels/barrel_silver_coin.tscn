@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://lxrwnracj0dy" path="res://assets/Props/Static/barrel.png" id="2_l37ow"]
 [ext_resource type="Texture2D" uid="uid://cfdltxdl83h6t" path="res://assets/Props/Static/debris2.png" id="3_fexoa"]
 [ext_resource type="PackedScene" uid="uid://b0v2osxyi0mhb" path="res://scenes/silver_coin.tscn" id="4_l37ow"]
+[ext_resource type="Texture2D" uid="uid://clvybfbh2i2q4" path="res://assets/Props/Static/barrel_shadow.png" id="5_n1o4k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
 size = Vector2(25, 30)
@@ -23,6 +24,12 @@ visible = false
 z_index = 1
 z_as_relative = false
 texture = ExtResource("3_fexoa")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1484623023]
+modulate = Color(1, 1, 1, 0.78431374)
+z_index = 2
+z_as_relative = false
+texture = ExtResource("5_n1o4k")
 
 [node name="SilverCoin" parent="." unique_id=1481024319 instance=ExtResource("4_l37ow")]
 visible = false

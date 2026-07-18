@@ -14,7 +14,11 @@
 [ext_resource type="PackedScene" uid="uid://35mn584dj84c" path="res://scenes/Light/silver_sconce.tscn" id="12_i40cd"]
 [ext_resource type="PackedScene" uid="uid://b7t82rf3kbb5l" path="res://scenes/Light/magic_torch.tscn" id="13_sux0x"]
 [ext_resource type="PackedScene" uid="uid://beoyoc48xpq8" path="res://scenes/skull.tscn" id="14_j1366"]
-[ext_resource type="PackedScene" uid="uid://jq0gcnhq3tyw" path="res://scenes/door.tscn" id="15_s7355"]
+[ext_resource type="PackedScene" uid="uid://jq0gcnhq3tyw" path="res://scenes/Level/door.tscn" id="15_s7355"]
+[ext_resource type="PackedScene" uid="uid://cuvi1vxja38vi" path="res://scenes/healing_flask.tscn" id="16_5k400"]
+[ext_resource type="PackedScene" uid="uid://s370x6ycqirs" path="res://scenes/Keys/bronze_key.tscn" id="17_vkbrg"]
+[ext_resource type="PackedScene" uid="uid://b1jjtl7w0ukvd" path="res://scenes/Chests/bronze_chest.tscn" id="18_jpnv8"]
+[ext_resource type="PackedScene" uid="uid://ntq858xmu5u7" path="res://scenes/Chests/crate.tscn" id="19_4q8bw"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_trtic"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -412,9 +416,6 @@ tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_gmfx5")
 sources/1 = SubResource("TileSetAtlasSource_gxfbt")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_761ku"]
-size = Vector2(40, 35)
-
 [node name="Level1_1" type="Node2D" unique_id=2036703151]
 
 [node name="Player" parent="." unique_id=337135565 instance=ExtResource("1_761ku")]
@@ -436,12 +437,12 @@ tile_set = SubResource("TileSet_8upax")
 
 [node name="TileMapLayer1" type="TileMapLayer" parent="MapLayers" unique_id=70675768]
 z_index = 1
-tile_map_data = PackedByteArray("AAAFAP3/AwAGAAAAAAAEAP3/AwAGAAAAAAADAP3/AwAGAAIAAAACAP3/AwAAAAEAAAAGAAAAAwACAAIAAAD+////AwABAAUAAAAFAAAABQACAAcAAAAEAAAABQADAAcAAAADAAAABQADAAYAAFADAP//BQADAAYAAGACAP//BQAAAAcAAAA=")
+tile_map_data = PackedByteArray("AAAFAP3/AwAGAAAAAAAEAP3/AwAGAAAAAAADAP3/AwAGAAIAAAAGAAAAAwACAAIAAAAFAAAABQACAAcAAAAEAAAABQADAAcAAAADAAAABQADAAYAAFADAP//BQADAAYAAGACAP//BQAAAAcAAAA=")
 tile_set = SubResource("TileSet_f03mx")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="MapLayers" unique_id=289417392]
 z_index = 4
-tile_map_data = PackedByteArray("AAAGAAAAAQAAAAAAAAAEAP7/AAADAAAAAAA=")
+tile_map_data = PackedByteArray("AAAEAP7/AAADAAAAAAA=")
 tile_set = SubResource("TileSet_ye24o")
 
 [node name="Destructibles" type="Node" parent="." unique_id=1676703546]
@@ -496,12 +497,32 @@ offset_right = 902.0
 offset_bottom = 637.0
 color = Color(0.07058824, 0.07058824, 0.08627451, 1)
 
+[node name="Flasks" type="Node" parent="." unique_id=190480497]
+
+[node name="HealingFlask" parent="Flasks" unique_id=403026442 instance=ExtResource("16_5k400")]
+position = Vector2(55, 108)
+
+[node name="HealingFlask2" parent="Flasks" unique_id=807676702 instance=ExtResource("16_5k400")]
+position = Vector2(114, -14)
+
+[node name="BronzeKey" parent="." unique_id=1640089612 instance=ExtResource("17_vkbrg")]
+position = Vector2(64, 9)
+
 [node name="Door" parent="." unique_id=1602873714 instance=ExtResource("15_s7355")]
-position = Vector2(209, 17)
+position = Vector2(192, 19)
 next_sublevel_path = "uid://s3m0famwsd63"
+required_key_value = 1
+spawn_id = "level1_1_door"
+target_spawn_id = "level1_2_door"
 
-[node name="CollisionShape2D" parent="Door" index="0" unique_id=961441942]
-position = Vector2(-12, 0.5)
-shape = SubResource("RectangleShape2D_761ku")
+[node name="BronzeChest" parent="." unique_id=1199433031 instance=ExtResource("18_jpnv8")]
+position = Vector2(58, -78)
+coin_reward = 3
+grants_key_value = 3
 
-[editable path="Door"]
+[node name="BronzeKey2" parent="." unique_id=732803532 instance=ExtResource("17_vkbrg")]
+position = Vector2(140, 37)
+
+[node name="Crate" parent="." unique_id=1302738114 instance=ExtResource("19_4q8bw")]
+position = Vector2(-49, -17)
+coin_reward = 2

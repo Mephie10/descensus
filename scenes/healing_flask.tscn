@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cuvi1vxja38vi"]
+
+[ext_resource type="Texture2D" uid="uid://c2mjhjccv1b6s" path="res://assets/Items/Static/health_potion.png" id="1_uh7yu"]
+[ext_resource type="Script" uid="uid://e33y4ptc6uod" path="res://scripts/healing_flask.gd" id="1_usakv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vkbrg"]
+size = Vector2(15, 19)
+
+[node name="HealingFlask" type="Area2D" unique_id=403026442]
+z_index = 3
+z_as_relative = false
+collision_mask = 2
+script = ExtResource("1_usakv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1070323621]
+modulate = Color(0.86036915, 0.8603692, 0.8603692, 1)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_uh7yu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1510362966]
+position = Vector2(-0.5, 0.5)
+shape = SubResource("RectangleShape2D_vkbrg")

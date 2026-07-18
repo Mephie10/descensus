@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://duydyv377e3sl"]
+
+[ext_resource type="Script" uid="uid://brf0h4jgow31y" path="res://scripts/golden_key.gd" id="1_remga"]
+[ext_resource type="Texture2D" uid="uid://cxxit676btkie" path="res://assets/Items/Static/golden_key.png" id="1_y28kp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
+size = Vector2(22, 13)
+
+[node name="GoldenKey" type="Area2D" unique_id=1640089612]
+z_index = 3
+z_as_relative = false
+collision_mask = 2
+script = ExtResource("1_remga")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1535298816]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("1_y28kp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1977248025]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_8upax")

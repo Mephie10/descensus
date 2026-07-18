@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://ntq858xmu5u7"]
+
+[ext_resource type="Script" uid="uid://cbtfsmcvj7aa3" path="res://scripts/crate.gd" id="1_ctdk3"]
+[ext_resource type="Texture2D" uid="uid://c4mdygcwbr7c2" path="res://assets/Props/Static/crate.png" id="2_oo8c7"]
+[ext_resource type="Texture2D" uid="uid://rrtguxgmlnbb" path="res://assets/Props/Static/crate2.png" id="3_in1wu"]
+[ext_resource type="Texture2D" uid="uid://b002q6qtdhlin" path="res://assets/Props/Static/crate_shadow.png" id="4_oo8c7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8upax"]
+size = Vector2(28, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f03mx"]
+size = Vector2(44, 46)
+
+[node name="Crate" type="StaticBody2D" unique_id=1199433031]
+z_index = 3
+z_as_relative = false
+script = ExtResource("1_ctdk3")
+
+[node name="Closed" type="Sprite2D" parent="." unique_id=1090317393]
+texture = ExtResource("2_oo8c7")
+
+[node name="Opened" type="Sprite2D" parent="." unique_id=568074450]
+visible = false
+texture = ExtResource("3_in1wu")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=352294267]
+modulate = Color(1, 1, 1, 0.78431374)
+z_index = 2
+z_as_relative = false
+texture = ExtResource("4_oo8c7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1599297590]
+shape = SubResource("RectangleShape2D_8upax")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=968834587]
+collision_mask = 2
+
+[node name="InteractionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=877502088]
+shape = SubResource("RectangleShape2D_f03mx")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=604743180]
+radius = 17.0
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]

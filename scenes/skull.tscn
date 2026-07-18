@@ -399,6 +399,7 @@ animations = [{
 radius = 8.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8upax"]
+radius = 9.0
 
 [node name="Skull" type="CharacterBody2D" unique_id=443707851 groups=["enemies"]]
 z_index = 5
@@ -423,7 +424,6 @@ texture = ExtResource("7_mferh")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=524840945]
 avoidance_enabled = true
-radius = 8.0
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1340545330]
 collision_layer = 0
