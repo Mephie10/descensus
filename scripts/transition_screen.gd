@@ -15,9 +15,6 @@ func change_scene(next_scene_path: String):
 	tween.tween_property(color_rect, "modulate:a", 1.0, fade_time)
 	await tween.finished
 
-	# Sicherstellen, dass der komplett schwarze Frame auch wirklich fertig
-	# gezeichnet und angezeigt wurde, bevor der (bei größeren Levels u.U. länger
-	# dauernde und den Hauptthread blockierende) Szenenwechsel startet.
 	await RenderingServer.frame_post_draw
 	await get_tree().process_frame
 
@@ -39,8 +36,6 @@ func reload_scene():
 	tween.tween_property(color_rect, "modulate:a", 1.0, fade_time)
 	await tween.finished
 
-	# Siehe change_scene(): sicherstellen, dass der schwarze Frame wirklich
-	# angezeigt wurde, bevor der blockierende Reload startet.
 	await RenderingServer.frame_post_draw
 	await get_tree().process_frame
 

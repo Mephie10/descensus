@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bwq7hxm3nvt6d"]
+
+[ext_resource type="Script" uid="uid://ctw8bnkq5r03m" path="res://scripts/cobweb.gd" id="1_cobweb"]
+[ext_resource type="Texture2D" uid="uid://ocs76ayhp1n4" path="res://assets/Props/Static/cobweb1.png" id="2_cobweb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cobweb"]
+size = Vector2(26, 26)
+
+[node name="Cobweb" type="Area2D" unique_id=1927463815 groups=["destructibles"]]
+z_index = 3
+z_as_relative = false
+collision_mask = 2
+script = ExtResource("1_cobweb")
+slow_factor = 0.3
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1927463816]
+z_index = 3
+z_as_relative = false
+texture = ExtResource("2_cobweb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1927463817]
+shape = SubResource("RectangleShape2D_cobweb")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1927463818]
+radius = 20.0

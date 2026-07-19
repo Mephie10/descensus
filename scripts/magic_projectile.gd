@@ -3,8 +3,12 @@ extends Area2D
 var direction: Vector2 = Vector2.RIGHT
 var speed: float = 230.0
 var damage: float = 10.0
-var knockback_strength: float = 70.0
+var knockback_strength: float = 80.0
 var shooter: Node = null
+
+# --- Verlangsamung, die der Treffer beim Spieler auslöst ---
+var slow_factor: float = 0.75
+var slow_duration: float = 1.5
 
 const MAX_LIFETIME = 2.5
 var _lifetime = 0.0
@@ -35,6 +39,10 @@ func _on_area_entered(area: Area2D) -> void:
 	if hit_player == shooter:
 		return
 
+	# Vor dem Schaden, damit der Treffer-Blitz sauber in den Slow-Tint zurückblendet
+	if hit_player.has_method("apply_slow"):
+		hit_player.apply_slow(slow_factor, slow_duration)
+
 	if hit_player.has_method("take_damage"):
 		hit_player.take_damage(damage)
 
@@ -51,8 +59,8 @@ func _on_body_entered(body):
 		return
 
 	# Der Spieler wird ausschließlich über seine Hurtbox getroffen. Sein Körper
-	# liegt auf derselben Ebene und würde den Pfeil sonst wirkungslos schlucken,
-	# falls body_entered im selben Physikschritt zuerst feuert.
+	# liegt auf derselben Ebene und würde das Projektil sonst wirkungslos
+	# schlucken, falls body_entered im selben Physikschritt zuerst feuert.
 	if body.is_in_group("player"):
 		return
 

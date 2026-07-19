@@ -1,29 +1,33 @@
 extends BaseEnemy
 
-const ARROW_SCENE = preload("res://scenes/Enemies/arrow.tscn")
+const PROJECTILE_SCENE = preload("res://scenes/Enemies/magic_projectile.tscn")
 
 @onready var anim = $AnimatedSprite2D
 @onready var nav_agent = $NavigationAgent2D
 @onready var collision = $CollisionShape2D
 @onready var shadow = $Shadow
 
-# --- Verhalten (fern -> nah): wandern, verfolgen, schießen, repositionieren, Panik ---
-var speed = 65.0
+# --- Verhalten (fern -> nah): wandern, verfolgen, schießen, repositionieren ---
+var speed = 45.0
 var chase_radius = 180.0
 var shoot_radius = 130.0
 var reposition_radius = 120.0
 var attack_damage = 10.0
-var attack_cooldown = 2.0
+var attack_cooldown = 2.5
 
-# --- Pfeil ---
-const ARROW_SPEED = 300.0
-const ARROW_SPAWN_OFFSET = 14.0
+# --- Projektil ---
+const PROJECTILE_SPEED = 170.0
+const PROJECTILE_SPAWN_OFFSET = 14.0
+
+# --- Verlangsamung des Spielers bei Treffer ---
+const SLOW_FACTOR = 0.75
+const SLOW_DURATION = 1.5
 # Zufällige Vorhersage-Genauigkeit der Spielerbewegung pro Schuss
 const AIM_LEAD_MIN = 0.3
 const AIM_LEAD_MAX = 0.85
 # Zufällige Grundstreuung pro Schuss
-const ACCURACY_SPREAD_MIN_DEGREES = 4.0
-const ACCURACY_SPREAD_MAX_DEGREES = 11.0
+const ACCURACY_SPREAD_MIN_DEGREES = 3.0
+const ACCURACY_SPREAD_MAX_DEGREES = 9.0
 
 # --- Freie Schussbahn (Gegner werden ignoriert) ---
 const LOS_COLLISION_MASK = 3 # Welt + Spieler
@@ -53,11 +57,11 @@ const SHADOW_OFFSET_DOWN = Vector2(0, 0)
 const SHADOW_OFFSET_UP = Vector2(-1, 0)
 var shadow_base_position: Vector2
 
-# --- Panik: steht still, schießt schneller, aber schwächer ---
+# --- Panik: aktuell neutral eingestellt, verhält sich exakt wie ein normaler Schuss ---
 const PANIC_DISTANCE = 80.0
-const PANIC_ANIM_SPEED_SCALE = 1.5
-const PANIC_COOLDOWN_FACTOR = 0.6
-const PANIC_DAMAGE_FACTOR = 0.5 # immer abgerundet
+const PANIC_ANIM_SPEED_SCALE = 1.0
+const PANIC_COOLDOWN_FACTOR = 1.0
+const PANIC_DAMAGE_FACTOR = 1.0 # immer abgerundet
 
 # --- Repositionieren: einmaliger Ausweichschritt, kein Dauer-Fliehen ---
 const REPOSITION_DISTANCE = 90.0
@@ -90,13 +94,13 @@ var last_direction = Vector2.DOWN
 var enemy_id = ""
 
 # --- Münz-Drop bei Tod ---
-const COIN_DROP_WEIGHTS = [1, 2, 5, 1]
+const COIN_DROP_WEIGHTS = [0, 2, 3, 5, 1]
 
 # --- Chance, beim Tod einen Skull zu hinterlassen ---
-const SKULL_SPAWN_CHANCE = 0.5
+const SKULL_SPAWN_CHANCE = 0.75
 
 func _init():
-	current_health = 70.0
+	current_health = 80.0
 
 func _ready():
 	enemy_id = Global.object_id(self)
@@ -169,12 +173,18 @@ func _physics_process(delta):
 		if can_attack:
 			attack(true)
 	elif player_alive and distance_to_player <= reposition_radius:
-		# Repositionieren
+		# Einmal ausweichen, danach ungerührt weiterschießen
 		_reset_wander_state()
 		_reset_los_reposition_state()
 		facing_override = player.global_position - global_position
 		face_player()
-		_reposition_from_proximity(delta)
+
+		if proximity_giving_up:
+			idle()
+			if can_attack:
+				attack()
+		else:
+			_reposition_from_proximity(delta)
 	elif player_alive and distance_to_player <= shoot_radius:
 		# Angriff aus Distanz
 		_reset_wander_state()
@@ -186,7 +196,7 @@ func _physics_process(delta):
 			_reset_los_reposition_state()
 			idle()
 			if can_attack:
-				attack(false)
+				attack()
 		else:
 			_move_toward_clear_shot(delta)
 	elif player_alive and distance_to_player <= chase_radius:
@@ -485,7 +495,7 @@ func chase_player():
 	var direction = global_position.direction_to(next_path_pos)
 	nav_agent.set_velocity(direction * speed)
 
-# --- Angriff: panic = schneller, aber schwächer ---
+# --- Angriff: panic = eigener Satz Faktoren (derzeit neutral) ---
 func attack(panic: bool = false) -> void:
 	is_attacking = true
 	can_attack = false
@@ -513,7 +523,7 @@ func attack(panic: bool = false) -> void:
 		anim.play("attack_up")
 		_apply_shadow_offset(SHADOW_OFFSET_UP)
 
-	# Pfeil fliegt erst am Ende der Animation los, dann aber immer
+	# Projektil fliegt erst am Ende der Animation los, dann aber immer
 	if anim.is_playing():
 		await anim.animation_finished
 
@@ -522,7 +532,7 @@ func attack(panic: bool = false) -> void:
 	if is_dead or not is_inside_tree():
 		return
 
-	_spawn_arrow(shot_direction, panic)
+	_spawn_projectile(shot_direction, panic)
 
 	is_attacking = false
 
@@ -533,8 +543,8 @@ func attack(panic: bool = false) -> void:
 		return
 	can_attack = true
 
-# --- Pfeil abschießen: Vorhersage + Streuung, zufällig pro Schuss ---
-func _spawn_arrow(shot_direction: Vector2, panic: bool = false) -> void:
+# --- Projektil abschießen: Vorhersage + Streuung, zufällig pro Schuss ---
+func _spawn_projectile(shot_direction: Vector2, panic: bool = false) -> void:
 	if not is_inside_tree():
 		return
 
@@ -544,7 +554,7 @@ func _spawn_arrow(shot_direction: Vector2, panic: bool = false) -> void:
 		var predicted_position = player.global_position
 		var travel_distance = global_position.distance_to(player.global_position)
 		if travel_distance > 0.001 and player.velocity.length() > 0.001:
-			var travel_time = travel_distance / ARROW_SPEED
+			var travel_time = travel_distance / PROJECTILE_SPEED
 			var shot_accuracy = randf_range(AIM_LEAD_MIN, AIM_LEAD_MAX)
 			predicted_position += player.velocity * travel_time * shot_accuracy
 
@@ -563,15 +573,17 @@ func _spawn_arrow(shot_direction: Vector2, panic: bool = false) -> void:
 	if panic:
 		damage = floor(attack_damage * PANIC_DAMAGE_FACTOR)
 
-	var arrow = ARROW_SCENE.instantiate()
-	arrow.direction = direction
-	arrow.speed = ARROW_SPEED
-	arrow.damage = damage
-	arrow.knockback_strength = knockback_to_player
-	arrow.shooter = self
+	var projectile = PROJECTILE_SCENE.instantiate()
+	projectile.direction = direction
+	projectile.speed = PROJECTILE_SPEED
+	projectile.damage = damage
+	projectile.knockback_strength = knockback_to_player
+	projectile.slow_factor = SLOW_FACTOR
+	projectile.slow_duration = SLOW_DURATION
+	projectile.shooter = self
 
-	get_tree().current_scene.add_child(arrow)
-	arrow.global_position = global_position + direction * ARROW_SPAWN_OFFSET
+	get_tree().current_scene.add_child(projectile)
+	projectile.global_position = global_position + direction * PROJECTILE_SPAWN_OFFSET
 
 func update_animation(facing_override: Vector2 = Vector2.ZERO) -> void:
 	if is_attacking:

@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://s3m0famwsd63"]
 
 [ext_resource type="PackedScene" uid="uid://1u8gnlag6cfw" path="res://scenes/player.tscn" id="1_s68pt"]
-[ext_resource type="PackedScene" uid="uid://lptgbd285atg" path="res://scenes/gold_coin.tscn" id="2_dxb8h"]
+[ext_resource type="PackedScene" uid="uid://lptgbd285atg" path="res://scenes/Coins/gold_coin.tscn" id="2_dxb8h"]
 [ext_resource type="Texture2D" uid="uid://bwqheepjscmuj" path="res://assets/Tilesets/Tileset_Dungeon.png" id="2_sjtqr"]
 [ext_resource type="Texture2D" uid="uid://bn2wtwnjqdx0j" path="res://assets/Tilesets/Objects_Overlay.png" id="3_o1ia2"]
 [ext_resource type="Texture2D" uid="uid://d13p25amibpld" path="res://assets/Tilesets/Props_Static.png" id="4_yxsdw"]
@@ -9,10 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://cltgsk5nonkoi" path="res://scenes/Barrels/barrel.tscn" id="7_s8ao2"]
 [ext_resource type="PackedScene" uid="uid://d4je1lwidqmf1" path="res://scenes/Barrels/barrel_silver_coin.tscn" id="8_i3346"]
 [ext_resource type="PackedScene" uid="uid://cf4w0iy3hjoqs" path="res://scenes/Light/golden_sconce.tscn" id="9_017ip"]
-[ext_resource type="PackedScene" uid="uid://bxwexyv54jjop" path="res://scenes/skeleton_warrior.tscn" id="10_dxb8h"]
+[ext_resource type="PackedScene" uid="uid://bxwexyv54jjop" path="res://scenes/Enemies/skeleton_warrior.tscn" id="10_dxb8h"]
 [ext_resource type="PackedScene" uid="uid://cxakpta00hkn" path="res://scenes/Chests/golden_chest.tscn" id="11_s8ao2"]
 [ext_resource type="PackedScene" uid="uid://jq0gcnhq3tyw" path="res://scenes/Level/door.tscn" id="12_i3346"]
-[ext_resource type="PackedScene" uid="uid://cspbrenytwko8" path="res://scenes/skeleton_archer.tscn" id="13_archer"]
+[ext_resource type="PackedScene" uid="uid://cspbrenytwko8" path="res://scenes/Enemies/skeleton_archer.tscn" id="13_archer"]
+[ext_resource type="PackedScene" uid="uid://cq4br8t0h2ns6" path="res://scenes/trap.tscn" id="14_i48uv"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_trtic"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -423,7 +424,7 @@ position = Vector2(131, 112)
 [node name="MapLayers" type="Node" parent="." unique_id=198020501]
 
 [node name="TileMapLayer0" type="TileMapLayer" parent="MapLayers" unique_id=456309348]
-tile_map_data = PackedByteArray("AAD9////AAABAAEAAAD9/wAAAAABAAIAAAD9/wEAAAADAAIAAAD+////AAACAAEAAAD+/wAAAAACAAIAAAD+/wEAAAACAAEAAAD/////AAADAAEAAAD//wAAAAADAAIAAAD//wEAAAADAAEAAAAAAP//AAAEAAEAAGAAAAAAAAADAAEAAGAAAAEAAAAEAAEAAAAAAAIAAAAEAAIAAAABAAIAAAABAAIAAGACAAIAAAABAAMAAGABAAEAAAACAAIAAGACAAEAAAACAAMAAGABAAAAAAADAAIAAGACAAAAAAADAAMAAGABAP//AAAEAAIAAGACAP//AAAEAAMAAGAAAAMAAAAEAAMAAAD//wIAAAADAAIAAAD//wMAAAADAAMAAAD+/wIAAAACAAIAAAD+/wMAAAACAAMAAAD9/wIAAAABAAIAAAD9/wMAAAABAAMAAAAFAP//AAAEAAEAAHAEAP//AAAEAAIAAHADAP//AAAEAAMAAHAFAAAAAAADAAEAAHAEAAAAAAADAAIAAHADAAAAAAADAAMAAHAFAAEAAAACAAEAAHAEAAEAAAACAAIAAHADAAEAAAACAAMAAHAFAAIAAAABAAEAAHAEAAIAAAABAAIAAHADAAIAAAABAAMAAHABAAMAAAABAAIAAAACAAMAAAACAAIAAAADAAMAAAADAAIAAAAEAAMAAAAEAAIAAAAFAAMAAAADAAEAAAD9//7/AAABAAAAAAD+//7/AAACAAAAAAD///7/AAADAAAAAAAAAP7/AAAEAAAAAAABAP7/AAABAAAAAAACAP7/AAABAAAAAAADAP7/AAACAAAAAAAEAP7/AAADAAAAAAAFAP7/AAAEAAAAAAAGAP7/AAAFAAAAAAAGAP//AAAFAAEAAAAGAAAAAAAFAAIAAAAGAAEAAAAFAAEAAAAGAAMAAAAFAAMAAAAGAAQAAAAFAAQAAAACAAQAAAABAAQAAAADAAQAAAACAAQAAAAEAAQAAAADAAQAAAAFAAQAAAAEAAQAAAD+/wQAAAACAAQAAAD//wQAAAADAAQAAAAAAAQAAAAEAAQAAAABAAQAAAAEAAQAAAD9/wQAAAABAAQAAAD8/wQAAAAAAAQAAAD8/wEAAAADAAIAAAD8/wIAAAAAAAIAAAD8/wMAAAAAAAMAAAD8//7/AAAAAAAAAAD8////AAAAAAEAAAD8/wAAAAAAAAIAAAAGAAIAAAADAAMAAAAHAAIAAAAGAAMAAGD7/wEAAAAGAAQAAGA=")
+tile_map_data = PackedByteArray("AAD9////AAABAAEAAAD9/wAAAAABAAIAAAD9/wEAAAADAAIAAAD+////AAACAAEAAAD+/wAAAAACAAIAAAD+/wEAAAACAAEAAAD/////AAADAAEAAAD//wAAAAADAAIAAAAAAP//AAAEAAEAAGAAAAAAAAADAAEAAGAAAAEAAAAEAAEAAAAAAAIAAAAEAAIAAAABAAIAAAABAAIAAGACAAIAAAABAAMAAGABAAEAAAACAAIAAGACAAEAAAACAAMAAGABAAAAAAADAAIAAGACAAAAAAADAAMAAGABAP//AAAEAAIAAGACAP//AAAEAAMAAGAAAAMAAAAEAAMAAAD//wMAAAADAAMAAAD+/wIAAAACAAIAAAD+/wMAAAACAAMAAAD9/wIAAAABAAIAAAD9/wMAAAABAAMAAAAFAP//AAAEAAEAAHAEAP//AAAEAAIAAHADAP//AAAEAAMAAHAFAAAAAAADAAEAAHAEAAAAAAADAAIAAHADAAAAAAADAAMAAHAFAAEAAAACAAEAAHAEAAEAAAACAAIAAHADAAEAAAACAAMAAHAFAAIAAAABAAEAAHAEAAIAAAABAAIAAHADAAIAAAABAAMAAHABAAMAAAABAAIAAAACAAMAAAACAAIAAAADAAMAAAADAAIAAAAEAAMAAAAEAAIAAAAFAAMAAAADAAEAAAD9//7/AAABAAAAAAD+//7/AAACAAAAAAD///7/AAADAAAAAAAAAP7/AAAEAAAAAAABAP7/AAABAAAAAAACAP7/AAABAAAAAAADAP7/AAACAAAAAAAEAP7/AAADAAAAAAAFAP7/AAAEAAAAAAAGAP7/AAAFAAAAAAAGAP//AAAFAAEAAAAGAAAAAAAFAAIAAAAGAAEAAAAFAAEAAAAGAAMAAAAFAAMAAAAGAAQAAAAFAAQAAAACAAQAAAABAAQAAAADAAQAAAACAAQAAAAEAAQAAAADAAQAAAAFAAQAAAAEAAQAAAD+/wQAAAACAAQAAAD//wQAAAADAAQAAAAAAAQAAAAEAAQAAAABAAQAAAAEAAQAAAD9/wQAAAABAAQAAAD8/wQAAAAAAAQAAAD8/wEAAAADAAIAAAD8/wIAAAAAAAIAAAD8/wMAAAAAAAMAAAD8//7/AAAAAAAAAAD8////AAAAAAEAAAD8/wAAAAAAAAIAAAAGAAIAAAADAAMAAAAHAAIAAAAGAAMAAGD7/wEAAAAGAAQAAGA=")
 tile_set = SubResource("TileSet_jxfff")
 
 [node name="TileMapLayer1" type="TileMapLayer" parent="MapLayers" unique_id=1072002903]
@@ -433,7 +434,7 @@ tile_set = SubResource("TileSet_n1w2u")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="MapLayers" unique_id=743935211]
 z_index = 4
-tile_map_data = PackedByteArray("AAAFAAMAAAADAAAAAAD9/wMAAAADAAEAAAD9/wAAAAADAAAAAAD9//7/AAAAAAAAAAAGAAIAAQABAAAAAAA=")
+tile_map_data = PackedByteArray("AAAFAAMAAAADAAAAAAD9/wMAAAADAAEAAAD9/wAAAAADAAAAAAD9//7/AAAAAAAAAAA=")
 tile_set = SubResource("TileSet_80xb7")
 
 [node name="Destructibles" type="Node" parent="." unique_id=1413409713]
@@ -468,6 +469,7 @@ position = Vector2(140, -2)
 position = Vector2(-21, -15)
 coin_reward = 10
 healing_flask_reward = 1
+grants_key_value = 2
 
 [node name="Door" parent="." unique_id=1602873714 instance=ExtResource("12_i3346")]
 position = Vector2(-101, 50)
@@ -485,6 +487,21 @@ position = Vector2(-11, 0)
 position = Vector2(-11, 0)
 
 [node name="SpawnPoint" parent="Door" index="4" unique_id=1925442304]
-position = Vector2(12, 0)
+position = Vector2(12, 1)
+
+[node name="Door2" parent="." unique_id=109816727 instance=ExtResource("12_i3346")]
+position = Vector2(192, 82)
+is_level_goal = true
+required_key_value = 2
+
+[node name="SilverLock" parent="Door2" index="2" unique_id=577668625]
+visible = true
+
+[node name="Trap" parent="." unique_id=1583920477 instance=ExtResource("14_i48uv")]
+position = Vector2(-16, 48)
+
+[node name="Trap2" parent="." unique_id=1361619648 instance=ExtResource("14_i48uv")]
+position = Vector2(-16, 80)
 
 [editable path="Door"]
+[editable path="Door2"]

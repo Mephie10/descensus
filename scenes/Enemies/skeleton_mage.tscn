@@ -1,17 +1,17 @@
-[gd_scene format=3 uid="uid://cspbrenytwko8"]
+[gd_scene format=3 uid="uid://dq7wk3n0ybf5x"]
 
-[ext_resource type="Texture2D" uid="uid://j15sl1wqs33d" path="res://assets/Enemies/Skeleton archer/Strips/Attack/down_strip.png" id="id_atk_d"]
-[ext_resource type="Texture2D" uid="uid://b40o57yqil0ma" path="res://assets/Enemies/Skeleton archer/Strips/Attack/side_strip.png" id="id_atk_s"]
-[ext_resource type="Texture2D" uid="uid://c6eqlke20a2yp" path="res://assets/Enemies/Skeleton archer/Strips/Attack/up_strip.png" id="id_atk_u"]
-[ext_resource type="Texture2D" uid="uid://c22c8hugo3l4j" path="res://assets/Enemies/Skeleton archer/Strips/Death/death_strip.png" id="id_death"]
-[ext_resource type="Texture2D" uid="uid://m7rrolfqbb5q" path="res://assets/Enemies/Skeleton archer/Strips/Idle/down_strip.png" id="id_idle_d"]
-[ext_resource type="Texture2D" uid="uid://cio12vy7yc02a" path="res://assets/Enemies/Skeleton archer/Strips/Idle/side_strip.png" id="id_idle_s"]
-[ext_resource type="Texture2D" uid="uid://263uytryl84s" path="res://assets/Enemies/Skeleton archer/Strips/Idle/up_strip.png" id="id_idle_u"]
-[ext_resource type="Texture2D" uid="uid://daw3fcoiyx6ld" path="res://assets/Enemies/Skeleton archer/Strips/Run/down_strip.png" id="id_run_d"]
-[ext_resource type="Texture2D" uid="uid://bofpny6rxectg" path="res://assets/Enemies/Skeleton archer/Strips/Run/side_strip.png" id="id_run_s"]
-[ext_resource type="Texture2D" uid="uid://dairew8a4788h" path="res://assets/Enemies/Skeleton archer/Strips/Run/up_strip.png" id="id_run_u"]
-[ext_resource type="Script" uid="uid://dpt0rrogb2fcn" path="res://scripts/skeleton_archer.gd" id="id_script"]
-[ext_resource type="Texture2D" uid="uid://c230uaiqmvyna" path="res://assets/Enemies/Skeleton archer/shadow.png" id="id_shadow"]
+[ext_resource type="Texture2D" uid="uid://s2j7asjt3pim" path="res://assets/Enemies/Skeleton mage/Strips/Attack/Down_strip.png" id="id_atk_d"]
+[ext_resource type="Texture2D" uid="uid://bi6sb3kgxtfjm" path="res://assets/Enemies/Skeleton mage/Strips/Attack/Side_strip.png" id="id_atk_s"]
+[ext_resource type="Texture2D" uid="uid://duswmwto5dajx" path="res://assets/Enemies/Skeleton mage/Strips/Attack/Up_strip.png" id="id_atk_u"]
+[ext_resource type="Texture2D" uid="uid://dwwc4c0g70yrw" path="res://assets/Enemies/Skeleton mage/Strips/Death/Death_strip.png" id="id_death"]
+[ext_resource type="Texture2D" uid="uid://7c1upoyroso5" path="res://assets/Enemies/Skeleton mage/Strips/Idle/Down_strip.png" id="id_idle_d"]
+[ext_resource type="Texture2D" uid="uid://d0gwsyxqljqss" path="res://assets/Enemies/Skeleton mage/Strips/Idle/Side_strip.png" id="id_idle_s"]
+[ext_resource type="Texture2D" uid="uid://cs27vxxhi33d3" path="res://assets/Enemies/Skeleton mage/Strips/Idle/Up_strip.png" id="id_idle_u"]
+[ext_resource type="Texture2D" uid="uid://b83broyovdsdj" path="res://assets/Enemies/Skeleton mage/Strips/Run/Down_strip.png" id="id_run_d"]
+[ext_resource type="Texture2D" uid="uid://cr8modeguun7u" path="res://assets/Enemies/Skeleton mage/Strips/Run/Side_strip.png" id="id_run_s"]
+[ext_resource type="Texture2D" uid="uid://bpcr6mga7asbw" path="res://assets/Enemies/Skeleton mage/Strips/Run/Up_strip.png" id="id_run_u"]
+[ext_resource type="Script" uid="uid://ba7mqxvn3kd8p" path="res://scripts/skeleton_mage.gd" id="id_script"]
+[ext_resource type="Texture2D" uid="uid://dbgs1eaj4ykpb" path="res://assets/Enemies/Skeleton mage/shadow.png" id="id_shadow"]
 
 [sub_resource type="AtlasTexture" id="At_atk_down_0"]
 atlas = ExtResource("id_atk_d")
@@ -29,14 +29,6 @@ region = Rect2(64, 0, 32, 48)
 atlas = ExtResource("id_atk_d")
 region = Rect2(96, 0, 32, 48)
 
-[sub_resource type="AtlasTexture" id="At_atk_down_4"]
-atlas = ExtResource("id_atk_d")
-region = Rect2(128, 0, 32, 48)
-
-[sub_resource type="AtlasTexture" id="At_atk_down_5"]
-atlas = ExtResource("id_atk_d")
-region = Rect2(160, 0, 32, 48)
-
 [sub_resource type="AtlasTexture" id="At_atk_side_0"]
 atlas = ExtResource("id_atk_s")
 region = Rect2(0, 0, 32, 48)
@@ -53,14 +45,6 @@ region = Rect2(64, 0, 32, 48)
 atlas = ExtResource("id_atk_s")
 region = Rect2(96, 0, 32, 48)
 
-[sub_resource type="AtlasTexture" id="At_atk_side_4"]
-atlas = ExtResource("id_atk_s")
-region = Rect2(128, 0, 32, 48)
-
-[sub_resource type="AtlasTexture" id="At_atk_side_5"]
-atlas = ExtResource("id_atk_s")
-region = Rect2(160, 0, 32, 48)
-
 [sub_resource type="AtlasTexture" id="At_atk_up_0"]
 atlas = ExtResource("id_atk_u")
 region = Rect2(0, 0, 32, 48)
@@ -76,14 +60,6 @@ region = Rect2(64, 0, 32, 48)
 [sub_resource type="AtlasTexture" id="At_atk_up_3"]
 atlas = ExtResource("id_atk_u")
 region = Rect2(96, 0, 32, 48)
-
-[sub_resource type="AtlasTexture" id="At_atk_up_4"]
-atlas = ExtResource("id_atk_u")
-region = Rect2(128, 0, 32, 48)
-
-[sub_resource type="AtlasTexture" id="At_atk_up_5"]
-atlas = ExtResource("id_atk_u")
-region = Rect2(160, 0, 32, 48)
 
 [sub_resource type="AtlasTexture" id="At_death_0"]
 atlas = ExtResource("id_death")
@@ -229,7 +205,7 @@ region = Rect2(128, 0, 32, 48)
 atlas = ExtResource("id_run_u")
 region = Rect2(160, 0, 32, 48)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_archer"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_mage"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -243,12 +219,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("At_atk_down_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("At_atk_down_4")
-}, {
-"duration": 1.0,
-"texture": SubResource("At_atk_down_5")
 }],
 "loop": 0,
 "name": &"attack_down",
@@ -266,12 +236,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("At_atk_side_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("At_atk_side_4")
-}, {
-"duration": 1.0,
-"texture": SubResource("At_atk_side_5")
 }],
 "loop": 0,
 "name": &"attack_side",
@@ -289,12 +253,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("At_atk_up_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("At_atk_up_4")
-}, {
-"duration": 1.0,
-"texture": SubResource("At_atk_up_5")
 }],
 "loop": 0,
 "name": &"attack_up",
@@ -445,41 +403,41 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
-size = Vector2(11, 15)
+size = Vector2(12, 15)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
-size = Vector2(21, 36)
+size = Vector2(24, 37)
 
-[node name="SkeletonArcher" type="CharacterBody2D" unique_id=1813222114 groups=["enemies"]]
+[node name="SkeletonMage" type="CharacterBody2D" unique_id=390298192 groups=["enemies"]]
 z_index = 5
 z_as_relative = false
 collision_mask = 3
 script = ExtResource("id_script")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=132425711]
-sprite_frames = SubResource("SpriteFrames_archer")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1923042262]
+sprite_frames = SubResource("SpriteFrames_mage")
 animation = &"idle_down"
 autoplay = "idle_down"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1035923354]
-position = Vector2(0.5, 16.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=205960830]
+position = Vector2(1, 16.5)
 shape = SubResource("RectangleShape2D_body")
 
-[node name="Shadow" type="Sprite2D" parent="." unique_id=340143975]
+[node name="Shadow" type="Sprite2D" parent="." unique_id=2028350209]
 modulate = Color(1, 1, 1, 0.7843137)
 z_index = 2
 z_as_relative = false
 position = Vector2(1, 11)
 texture = ExtResource("id_shadow")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=188480422]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=713744458]
 avoidance_enabled = true
 radius = 8.0
 
-[node name="Hurtbox" type="Area2D" parent="." unique_id=65697989]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=36285395]
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1624702588]
-position = Vector2(1.5, 5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=745552537]
+position = Vector2(0, 5.5)
 shape = SubResource("RectangleShape2D_hurtbox")

@@ -423,7 +423,7 @@ size = Vector2(14, 18)
 size = Vector2(17, 47)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye24o"]
-size = Vector2(27, 39)
+size = Vector2(25, 39)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a38lo"]
 load_path = "res://.godot/imported/UI_Stone_Fillbar_Filler_Red_01a.png-9780b4a7ee2bff5ed45fd4d9eea9be54.ctex"
@@ -435,7 +435,7 @@ script = ExtResource("1_3v2ag")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1821007735]
 position = Vector2(-1, 0)
-zoom = Vector2(3.75, 3.75)
+zoom = Vector2(4, 4)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=953661259]
 position = Vector2(-2, -3)
@@ -453,6 +453,11 @@ texture = ExtResource("12_3v2ag")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2146914492]
 position = Vector2(-1, 12)
 shape = SubResource("RectangleShape2D_8upax")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=979432668]
+position = Vector2(-1, -10)
+radius = 8.0
+avoidance_layers = 4
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=509753278]
 collision_mask = 3
@@ -712,7 +717,7 @@ grow_vertical = 2
 pivot_offset = Vector2(40, 20)
 theme_override_fonts/font = ExtResource("14_f1ej7")
 theme_override_font_sizes/font_size = 32
-text = "EXIT"
+text = "BACK"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -739,6 +744,7 @@ vertical_alignment = 1
 
 [node name="PauseMenu" parent="." unique_id=942095560 instance=ExtResource("21_i4ail")]
 
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="pressed" from="GameOverUI/FadeContainer/MenuPanel/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="GameOverUI/FadeContainer/MenuPanel/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -398,6 +398,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_r5bhe"]
 radius = 8.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
+radius = 8.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_8upax"]
 radius = 9.0
 
@@ -424,6 +427,14 @@ texture = ExtResource("7_mferh")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=524840945]
 avoidance_enabled = true
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1340545331]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1191395484]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_hurtbox")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1340545330]
 collision_layer = 0

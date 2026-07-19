@@ -406,7 +406,7 @@ animations = [{
 size = Vector2(10, 13.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye24o"]
-size = Vector2(23, 37)
+size = Vector2(24, 37)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ypgxi"]
 size = Vector2(17, 45.5)
@@ -437,6 +437,7 @@ texture = ExtResource("11_87xd0")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=495559197]
 avoidance_enabled = true
 radius = 8.0
+avoidance_mask = 5
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1955513057]
 position = Vector2(4, 1)
@@ -444,7 +445,7 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1453897835]
-position = Vector2(-3.5, 4.5)
+position = Vector2(-4, 4.5)
 shape = SubResource("RectangleShape2D_ye24o")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1789754207]

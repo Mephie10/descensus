@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const MAIN_MENU_SCENE = "res://scenes/UI/main_menu.tscn"
+
 func _ready():
 	hide()
 
@@ -25,8 +27,14 @@ func _on_resume_button_pressed() -> void:
 	toggle_pause()
 
 
+# Zurück ins Hauptmenü. Der laufende Durchgang wird dabei verworfen. Die Pause
+# muss vorher raus, sonst startet die neue Szene in einem pausierten Baum und
+# reagiert nicht.
 func _on_quit_button_pressed() -> void:
-	get_tree().quit()
+	get_tree().paused = false
+	Global.reset_progress()
+	Global.set_menu_cursor()
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 
 
 func _on_restart_button_pressed():

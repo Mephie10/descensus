@@ -6,18 +6,18 @@ extends BaseEnemy
 @onready var hitbox_shape = $Hitbox/CollisionShape2D
 @onready var shadow = $Sprite2D
 
-var speed = 70.0
+var speed = 60.0
 var chase_radius = 110.0
 var attack_radius = 26.0
-var attack_damage = 20.0
+var attack_damage = 15.0
 
-var attack_cooldown = 0.75
+var attack_cooldown = 0.78
 var can_attack = true
 
 # --- Wegdrücken durch den Spieler ---
 var push_velocity: Vector2 = Vector2.ZERO
 var push_friction = 300.0
-var max_push_speed = speed * 1.4 # deutlich schneller als die eigene Verfolgung, sonst kann man ihn in Ecken nie wirklich wegdrücken
+var max_push_speed = speed * 0.5
 
 # --- Wegdrücken zwischen Gegnern ---
 const ENEMY_TO_ENEMY_PUSH_FORCE = 250.0
@@ -26,6 +26,13 @@ var _physics_delta = 0.0
 # --- Rückstoß bei Treffern ---
 var knockback_strength = 100.0
 var knockback_to_player = 90.0
+
+# --- Schatten-Versatz je Blickrichtung ---
+const SHADOW_OFFSET_RIGHT = Vector2(-1, -1)
+const SHADOW_OFFSET_LEFT = Vector2(-2, -1)
+const SHADOW_OFFSET_DOWN = Vector2(0, -1)
+const SHADOW_OFFSET_UP = Vector2(-1, -1)
+var shadow_base_position: Vector2
 
 # --- Ausfallschritt beim Angriff (kleiner als beim Skull) ---
 var lunge_speed = speed * 1.05
@@ -63,6 +70,9 @@ var enemy_id = ""
 # --- Münz-Drop bei Tod: 0-3, meistens 2 ---
 const COIN_DROP_WEIGHTS = [1, 2, 5, 1]
 
+# --- Chance, beim Tod einen Skull zu hinterlassen ---
+const SKULL_SPAWN_CHANCE = 0.5
+
 func _init():
 	current_health = 70.0
 
@@ -82,6 +92,7 @@ func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	hitbox_shape.set_deferred("disabled", true)
 	start_position = global_position
+	shadow_base_position = shadow.position
 	stuck_check_position = global_position
 
 	nav_agent.velocity_computed.connect(_on_safe_velocity_computed)
@@ -197,13 +208,6 @@ func _compose_velocity(self_velocity: Vector2) -> Vector2:
 	if push_velocity == Vector2.ZERO:
 		return self_velocity
 
-	# Bei spürbarem Rückstoß die KI-Bewegung kurz komplett unterdrücken. Sonst würde z.B.
-	# beim seitlichen Wegdrücken an einer Wand die Verfolgung weiterhin die seitliche
-	# Bewegung des Spielers mitgehen (nur die direkt entgegengesetzte Komponente wurde
-	# bisher gekappt) - der Gegner "klebt" dann am Spieler, statt wirklich wegzuweichen.
-	if push_velocity.length() > PUSH_CANCEL_THRESHOLD:
-		return push_velocity
-
 	var push_dir = push_velocity.normalized()
 	var along = self_velocity.dot(push_dir)
 	if along < 0.0:
@@ -304,6 +308,7 @@ func _pick_new_wander_target():
 
 	wander_target_valid = false
 
+
 func _on_safe_velocity_computed(safe_velocity: Vector2):
 	if is_dead or is_attacking:
 		return
@@ -336,28 +341,28 @@ func attack():
 		anim.flip_h = false
 		anim.play("attack_side")
 		hitbox.position = Vector2(15, 0)
-		shadow.position = Vector2(0, 10)
+		_apply_shadow_offset(SHADOW_OFFSET_RIGHT)
 		lunge_dir = Vector2.RIGHT
 
 	elif last_dir == "left":
 		anim.flip_h = true
 		anim.play("attack_side")
 		hitbox.position = Vector2(-15, 0)
-		shadow.position = Vector2(-1, 10)
+		_apply_shadow_offset(SHADOW_OFFSET_LEFT)
 		lunge_dir = Vector2.LEFT
 
 	elif last_dir == "down":
 		anim.flip_h = false
 		anim.play("attack_down")
 		hitbox.position = Vector2(0, 10)
-		shadow.position = Vector2(1, 10)
+		_apply_shadow_offset(SHADOW_OFFSET_DOWN)
 		lunge_dir = Vector2.DOWN
 
 	elif last_dir == "up":
 		anim.flip_h = false
 		anim.play("attack_up")
 		hitbox.position = Vector2(0, -10)
-		shadow.position = Vector2(0, 10)
+		_apply_shadow_offset(SHADOW_OFFSET_UP)
 		lunge_dir = Vector2.UP
 
 	# Kurzer Ausfallschritt zu Beginn des Angriffs
@@ -395,6 +400,13 @@ func attack():
 
 	if not is_inside_tree():
 		return
+
+	# Auch im offenen Trefferfenster noch abbrechen können, sonst landet der
+	# Schaden trotz weggedrücktem und optisch abgebrochenem Angriff.
+	if attack_interrupted:
+		_end_attack_early()
+		return
+
 	await get_tree().physics_frame
 	hitbox_shape.set_deferred("disabled", true)
 
@@ -435,40 +447,40 @@ func update_animation(facing_override: Vector2 = Vector2.ZERO) -> void:
 				anim.flip_h = false
 				anim.play("run_side")
 				last_dir = "right"
-				shadow.position = Vector2(0, 10)
+				_apply_shadow_offset(SHADOW_OFFSET_RIGHT)
 			else:
 				anim.flip_h = true
 				anim.play("run_side")
 				last_dir = "left"
-				shadow.position = Vector2(-1, 10)
+				_apply_shadow_offset(SHADOW_OFFSET_LEFT)
 		else:
 			if dir.y > 0:
 				anim.flip_h = false
 				anim.play("run_down")
 				last_dir = "down"
-				shadow.position = Vector2(1, 10)
+				_apply_shadow_offset(SHADOW_OFFSET_DOWN)
 			else:
 				anim.flip_h = false
 				anim.play("run_up")
 				last_dir = "up"
-				shadow.position = Vector2(0, 10)
+				_apply_shadow_offset(SHADOW_OFFSET_UP)
 	else:
 		if last_dir == "right":
 			anim.flip_h = false
 			anim.play("idle_side")
-			shadow.position = Vector2(0, 10)
+			_apply_shadow_offset(SHADOW_OFFSET_RIGHT)
 		elif last_dir == "left":
 			anim.flip_h = true
 			anim.play("idle_side")
-			shadow.position = Vector2(-1, 10)
+			_apply_shadow_offset(SHADOW_OFFSET_LEFT)
 		elif last_dir == "down":
 			anim.flip_h = false
 			anim.play("idle_down")
-			shadow.position = Vector2(1, 10)
+			_apply_shadow_offset(SHADOW_OFFSET_DOWN)
 		elif last_dir == "up":
 			anim.flip_h = false
 			anim.play("idle_up")
-			shadow.position = Vector2(0, 10)
+			_apply_shadow_offset(SHADOW_OFFSET_UP)
 
 func _on_hitbox_body_entered(body):
 	if is_dead:
@@ -484,7 +496,13 @@ func _on_hitbox_body_entered(body):
 				dir = _last_dir_vector()
 			body.apply_knockback(dir.normalized(), knockback_to_player)
 
-func take_damage(amount):
+# Szenenposition + richtungsabhängiger Versatz
+func _apply_shadow_offset(offset: Vector2) -> void:
+	shadow.position = shadow_base_position + offset
+
+# grants_reward = false, wenn der Tod nicht dem Spieler zuzurechnen ist
+# (z.B. eine Falle). Dann gibt es keine Muenzen.
+func take_damage(amount, grants_reward: bool = true):
 	if is_dead:
 		return
 
@@ -496,9 +514,9 @@ func take_damage(amount):
 	tween.tween_property(anim, "modulate", Color.WHITE, 0.1)
 
 	if current_health <= 0:
-		die_with_animation()
+		die_with_animation(grants_reward)
 
-func die_with_animation():
+func die_with_animation(grants_reward: bool = true):
 	if is_dead:
 		return
 
@@ -515,10 +533,13 @@ func die_with_animation():
 	$Hurtbox/CollisionShape2D.set_deferred("disabled", true)
 	$CollisionShape2D.set_deferred("disabled", true)
 
-	_drop_coins()
+	if grants_reward:
+		_drop_coins()
 
 	anim.play("death")
 	await anim.animation_finished
+
+	Global.try_spawn_skull(self, SKULL_SPAWN_CHANCE)
 
 	die()
 

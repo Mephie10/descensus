@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://dq2t8vkr6ln53"]
+
+[ext_resource type="Texture2D" uid="uid://bc27j5ujla23j" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Lock_02a2.png" id="id_bm0"]
+[ext_resource type="Texture2D" uid="uid://ckw3vcvuwn5v" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Release_02a2.png" id="id_bm1"]
+[ext_resource type="Texture2D" uid="uid://b8vea1x6lpf23" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Press_02a3.png" id="id_bm2"]
+[ext_resource type="Texture2D" uid="uid://ciuyrka8ihotb" path="res://assets/Items/Animated/Frames/Gold_coin/00.png" id="id_coin"]
+[ext_resource type="Texture2D" uid="uid://1igvltjcea3v" path="res://assets/Items/Animated/Frames/Silver_coin/00.png" id="id_coin_silver"]
+[ext_resource type="FontFile" uid="uid://j4h2gjx61l27" path="res://assets/Font/TTF (16px)/Toriko.ttf" id="id_font"]
+[ext_resource type="Texture2D" uid="uid://3dvfb8yqve6e" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Frame_Standard_02a.png" id="id_frame"]
+[ext_resource type="Script" uid="uid://bs4h0nqmt7k1d" path="res://scripts/victory_screen.gd" id="id_script"]
+
+[node name="VictoryScreen" type="Control" unique_id=407841354]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("id_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=41744883]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.05, 0.05, 0.07, 1)
+
+[node name="Panel" type="NinePatchRect" parent="." unique_id=1788636505]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -200.0
+offset_right = 280.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+pivot_offset = Vector2(280, 200)
+texture = ExtResource("id_frame")
+region_rect = Rect2(0, 0, 96, 96)
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Title" type="Label" parent="Panel" unique_id=1863857450]
+modulate = Color(0.5053218, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -170.0
+offset_right = 260.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("id_font")
+theme_override_font_sizes/font_size = 104
+text = "YOU SURVIVED!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CoinDisplay" type="HBoxContainer" parent="Panel" unique_id=704277922]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -221.33334
+offset_top = -56.0
+offset_right = 138.66666
+offset_bottom = 54.000015
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = -14
+alignment = 1
+
+[node name="GoldIcon" type="TextureRect" parent="Panel/CoinDisplay" unique_id=187492960]
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("id_coin")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="SilverIcon" type="TextureRect" parent="Panel/CoinDisplay/GoldIcon" unique_id=276222906]
+layout_mode = 0
+offset_left = 36.666668
+offset_top = 32.0
+offset_right = 104.66667
+offset_bottom = 96.0
+texture = ExtResource("id_coin_silver")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="CoinLabel" type="Label" parent="Panel" unique_id=1914218076]
+layout_mode = 0
+offset_left = 282.66666
+offset_top = 189.33333
+offset_right = 335.66666
+offset_bottom = 235.33333
+theme_override_fonts/font = ExtResource("id_font")
+theme_override_font_sizes/font_size = 60
+text = "00"
+vertical_alignment = 1
+
+[node name="BackButton" type="TextureButton" parent="Panel" unique_id=410649271]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = 100.0
+offset_right = 70.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(70, 35)
+texture_normal = ExtResource("id_bm0")
+texture_pressed = ExtResource("id_bm1")
+texture_hover = ExtResource("id_bm2")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Panel/BackButton" unique_id=1098426461]
+modulate = Color(0.5053218, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 9.333334
+offset_bottom = 9.333334
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("id_font")
+theme_override_font_sizes/font_size = 48
+text = "BACK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]

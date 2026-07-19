@@ -3,13 +3,23 @@ extends CharacterBody2D
 const SPEED = 110.0
 const ENEMY_PUSH_FORCE = 450.0
 
+const MAIN_MENU_SCENE = "res://scenes/UI/main_menu.tscn"
+
 # Rückstoß, den der Spieler selbst erleidet
 const KNOCKBACK_TAKEN = 90.0
 const KNOCKBACK_FRICTION = 650.0
 
+# --- Schatten-Versatz je Blickrichtung ---
+const SHADOW_OFFSET_RIGHT = Vector2(1, -1)
+const SHADOW_OFFSET_LEFT = Vector2(-3, -1)
+const SHADOW_OFFSET_DOWN = Vector2(0, -1)
+const SHADOW_OFFSET_UP = Vector2(-2, -1)
+var shadow_base_position: Vector2
+
 @onready var anim = $AnimatedSprite2D
 @onready var hitbox = $Hitbox
 @onready var hitbox_shape = $Hitbox/CollisionShape2D
+@onready var hurtbox_shape = $Hurtbox/CollisionShape2D
 @onready var shadow = $Shadow
 @onready var health_bar = $HUD/HealthBar
 @onready var hud = $HUD
@@ -25,7 +35,7 @@ var current_health = 100.0
 var attack_damage = 25.0
 
 # Angriffs-Cooldown
-var attack_cooldown = 0.25
+var attack_cooldown = 0.20
 var can_attack = true
 
 var is_dead = false
@@ -46,6 +56,10 @@ var is_healing = false
 var is_drinking = false
 var heal_blink_tween: Tween = null
 
+# Trank verbraucht, HP aber noch nicht gutgeschrieben. Wird exakt in dem Moment
+# gelöscht, in dem die Heilung wirkt - nicht früher.
+var heal_pending = false
+
 # --- Truhen/Kisten öffnen: kurz stehen bleiben, kein Öffnen im Vorbeigehen ---
 const CONTAINER_INTERACT_DURATION = 0.35
 var is_interacting = false
@@ -59,9 +73,21 @@ const KEY_TEXTURES := {
 }
 var keys: Array = []
 
+# --- Verlangsamung ---
+# Zwei Quellen: zeitbasiert (Magier-Projektil) und zonenbasiert (Spinnweben,
+# gilt solange man drinsteht). slow_factor ist der kombinierte Wert.
+const SLOW_TINT = Color(0.585, 1.15, 0.587, 1.0)
+var slow_factor = 1.0
+var timed_slow_factor = 1.0
+var slow_timer = 0.0
+var slow_zones: Dictionary = {}
+var damage_flash_tween: Tween = null
+
 func _physics_process(delta):
 	if is_dead:
 		return
+
+	_update_slow(delta)
 
 	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, KNOCKBACK_FRICTION * delta)
 
@@ -81,32 +107,32 @@ func _physics_process(delta):
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	if direction != Vector2.ZERO:
-		velocity = direction * SPEED
+		velocity = direction * SPEED * slow_factor
 
 		# --- BEWEGUNG ---
 		if direction.x > 0:
 			anim.flip_h = false
 			anim.play("run_side")
 			last_dir = "right"
-			shadow.position = Vector2(0, 7)
+			_apply_shadow_offset(SHADOW_OFFSET_RIGHT)
 
 		elif direction.x < 0:
 			anim.flip_h = true
 			anim.play("run_side")
 			last_dir = "left"
-			shadow.position = Vector2(-4, 7)
+			_apply_shadow_offset(SHADOW_OFFSET_LEFT)
 
 		elif direction.y > 0:
 			anim.flip_h = false
 			anim.play("run_down")
 			last_dir = "down"
-			shadow.position = Vector2(-1, 7)
+			_apply_shadow_offset(SHADOW_OFFSET_DOWN)
 
 		elif direction.y < 0:
 			anim.flip_h = false
 			anim.play("run_up")
 			last_dir = "up"
-			shadow.position = Vector2(-3, 7)
+			_apply_shadow_offset(SHADOW_OFFSET_UP)
 
 	else:
 		velocity = Vector2.ZERO
@@ -121,27 +147,94 @@ func _play_idle():
 	if last_dir == "right":
 		anim.flip_h = false
 		anim.play("idle_side")
-		shadow.position = Vector2(0, 7)
+		_apply_shadow_offset(SHADOW_OFFSET_RIGHT)
 
 	elif last_dir == "left":
 		anim.flip_h = true
 		anim.play("idle_side")
-		shadow.position = Vector2(-4, 7)
+		_apply_shadow_offset(SHADOW_OFFSET_LEFT)
 
 	elif last_dir == "down":
 		anim.flip_h = false
 		anim.play("idle_down")
-		shadow.position = Vector2(-1, 7)
+		_apply_shadow_offset(SHADOW_OFFSET_DOWN)
 
 	elif last_dir == "up":
 		anim.flip_h = false
 		anim.play("idle_up")
-		shadow.position = Vector2(-3, 7)
+		_apply_shadow_offset(SHADOW_OFFSET_UP)
 
 func apply_knockback(direction: Vector2, strength: float = KNOCKBACK_TAKEN) -> void:
 	if is_dead:
 		return
 	knockback_velocity = direction.normalized() * strength
+
+# --- Zeitbasiert: erneuter Treffer setzt die Dauer wieder auf voll ---
+func apply_slow(factor: float, duration: float) -> void:
+	if is_dead:
+		return
+
+	timed_slow_factor = factor
+	slow_timer = duration
+	_update_slow_factor()
+
+func _update_slow(delta: float) -> void:
+	if slow_timer <= 0.0:
+		return
+
+	slow_timer -= delta
+
+	if slow_timer <= 0.0:
+		slow_timer = 0.0
+		timed_slow_factor = 1.0
+		_update_slow_factor()
+
+# --- Zonenbasiert: gilt, solange man in der Zone steht (z.B. Spinnweben) ---
+func enter_slow_zone(zone: Node, factor: float) -> void:
+	if is_dead:
+		return
+
+	slow_zones[zone] = factor
+	_update_slow_factor()
+
+func exit_slow_zone(zone: Node) -> void:
+	if slow_zones.erase(zone):
+		_update_slow_factor()
+
+# Der stärkste Effekt gewinnt, statt sich zu multiplizieren - im Netz und mit
+# Magier-Treffer wäre man sonst praktisch bewegungsunfähig.
+func _update_slow_factor() -> void:
+	var strongest = timed_slow_factor
+
+	# Freigegebene Zonen aussortieren, damit keine Bremse hängen bleibt
+	for zone in slow_zones.keys():
+		if not is_instance_valid(zone):
+			slow_zones.erase(zone)
+			continue
+		strongest = min(strongest, slow_zones[zone])
+
+	slow_factor = strongest
+	_refresh_tint()
+
+# Nur der Magier-Treffer färbt grün, Spinnweben nicht
+func is_slowed() -> bool:
+	return slow_timer > 0.0
+
+# Grundfärbung des Sprites: grün, solange die Verlangsamung aktiv ist
+func _base_modulate() -> Color:
+	return SLOW_TINT if is_slowed() else Color.WHITE
+
+# Setzt die Färbung, ohne laufende Blink-Effekte zu stören
+func _refresh_tint() -> void:
+	if is_dead or is_healing:
+		return
+	if damage_flash_tween and damage_flash_tween.is_running():
+		return
+	anim.modulate = _base_modulate()
+
+func _on_damage_flash_finished() -> void:
+	damage_flash_tween = null
+	_refresh_tint()
 
 # Fallback-Blickrichtung für Rückstoß, falls Positionen identisch sind
 func _facing_vector() -> Vector2:
@@ -171,25 +264,25 @@ func attack():
 		anim.flip_h = false
 		anim.play("attack_side")
 		hitbox.position = Vector2(15, 0)
-		shadow.position = Vector2(0, 7)
+		_apply_shadow_offset(SHADOW_OFFSET_RIGHT)
 
 	elif last_dir == "left":
 		anim.flip_h = true
 		anim.play("attack_side")
 		hitbox.position = Vector2(-15, 0)
-		shadow.position = Vector2(-4, 7)
+		_apply_shadow_offset(SHADOW_OFFSET_LEFT)
 
 	elif last_dir == "down":
 		anim.flip_h = false
 		anim.play("attack_down")
 		hitbox.position = Vector2(0, 10)
-		shadow.position = Vector2(-1, 7)
+		_apply_shadow_offset(SHADOW_OFFSET_DOWN)
 
 	elif last_dir == "up":
 		anim.flip_h = false
 		anim.play("attack_up")
 		hitbox.position = Vector2(0, -0)
-		shadow.position = Vector2(-3, 7)
+		_apply_shadow_offset(SHADOW_OFFSET_UP)
 
 	# Schaden im letzten Drittel der Animation
 	var frame_count = anim.sprite_frames.get_frame_count(anim.animation)
@@ -252,9 +345,6 @@ func add_key(value: int) -> void:
 	Global.player_keys = keys.duplicate()
 	_update_key_hud()
 
-func has_key(value: int) -> bool:
-	return keys.has(value)
-
 func use_key(value: int) -> bool:
 	var idx = keys.find(value)
 	if idx == -1:
@@ -297,6 +387,7 @@ func heal():
 
 	is_healing = true
 	is_drinking = true
+	heal_pending = true
 	healing_flask_count -= 1
 	Global.player_healing_flasks = healing_flask_count
 
@@ -329,34 +420,71 @@ func heal():
 		return
 
 	heal_blink_tween.kill()
-	anim.modulate = Color.WHITE
 	is_healing = false
+	_refresh_tint()
 
 	if is_dead:
 		return
 
+	heal_pending = false
 	current_health = min(current_health + HEAL_AMOUNT, max_health)
 	Global.player_current_health = current_health
 	health_bar.value = current_health
 	_update_low_hp_blink()
 
+# Beim Sublevel-Wechsel wird der Spieler mitten in der laufenden Heilung
+# freigegeben und die Coroutine bricht ab. Ohne das hier wäre der Trank
+# verbraucht, die HP aber nie gutgeschrieben.
+func _exit_tree() -> void:
+	if not heal_pending or is_dead:
+		return
+
+	heal_pending = false
+	Global.credit_pending_heal(HEAL_AMOUNT, max_health)
+
+# Gegner werden über ihre Hurtbox getroffen, nicht über ihren Körper-Collider.
+# Der Körper sitzt nur auf Fußhöhe und ist viel kleiner als der sichtbare Sprite.
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	# Zerstörbares, das kein Körper ist und deshalb nicht über body_entered
+	# läuft - etwa Spinnweben, durch die man hindurchgehen kann.
+	if area.is_in_group("destructibles"):
+		if area.has_method("smash"):
+			area.smash()
+		return
+
+	if area.name != "Hurtbox":
+		return
+
+	# Die eigene Hurtbox des Spielers liegt auf derselben Ebene und würde sonst
+	# mitgezählt werden.
+	var enemy = area.get_parent()
+	if enemy == null or not enemy.is_in_group("enemies"):
+		return
+
+	if enemy.has_method("take_damage"):
+		enemy.take_damage(attack_damage)
+
+	if enemy.has_method("apply_knockback"):
+		var dir = enemy.global_position - global_position
+		if dir.length() < 0.001:
+			dir = _facing_vector()
+		enemy.apply_knockback(dir.normalized())
+
+# Nur noch Zerstörbares. Gegner laufen über die Hurtbox, sonst würde ein
+# einzelner Schlag doppelt zählen.
 func _on_hitbox_body_entered(body):
-
-	if body.is_in_group("enemies"):
-		if body.has_method("take_damage"):
-			body.take_damage(attack_damage)
-
-		if body.has_method("apply_knockback"):
-			var dir = body.global_position - global_position
-			if dir.length() < 0.001:
-				dir = _facing_vector()
-			body.apply_knockback(dir.normalized())
-
-	elif body.is_in_group("destructibles"):
+	if body.is_in_group("destructibles"):
 		if body.has_method("smash"):
 			body.smash()
 
+# Szenenposition + richtungsabhängiger Versatz
+func _apply_shadow_offset(offset: Vector2) -> void:
+	shadow.position = shadow_base_position + offset
+
 func take_damage(amount):
+	if is_dead:
+		return
+
 	current_health -= amount
 	Global.player_current_health = current_health
 	print("Spieler getroffen! Aktuelle HP: ", current_health)
@@ -364,9 +492,13 @@ func take_damage(amount):
 	health_bar.value = current_health
 	_update_low_hp_blink()
 
-	var tween = create_tween()
-	tween.tween_property(anim, "modulate", Color.RED, 0.15)
-	tween.tween_property(anim, "modulate", Color.WHITE, 0.1)
+	if damage_flash_tween:
+		damage_flash_tween.kill()
+
+	damage_flash_tween = create_tween()
+	damage_flash_tween.tween_property(anim, "modulate", Color.RED, 0.15)
+	damage_flash_tween.tween_property(anim, "modulate", Color.WHITE, 0.1)
+	damage_flash_tween.tween_callback(_on_damage_flash_finished)
 
 	if current_health <= 0:
 		die()
@@ -379,11 +511,26 @@ func die():
 	velocity = Vector2.ZERO
 	hitbox_shape.set_deferred("disabled", true)
 
+	# Sonst schlagen Gegner und Projektile weiter auf die Leiche ein
+	hurtbox_shape.set_deferred("disabled", true)
+
+	heal_pending = false
+
+	slow_timer = 0.0
+	timed_slow_factor = 1.0
+	slow_zones.clear()
+	slow_factor = 1.0
+
 	_stop_low_hp_blink()
 
 	if heal_blink_tween:
 		heal_blink_tween.kill()
-	anim.modulate = Color.WHITE
+
+	# Der Treffer-Blitz des tödlichen Schlags darf auslaufen, sonst stirbt der
+	# Spieler ohne rotes Aufblinken. Er endet von selbst auf Weiß.
+	if not (damage_flash_tween and damage_flash_tween.is_running()):
+		damage_flash_tween = null
+		anim.modulate = Color.WHITE
 
 	anim.play("death")
 	await anim.animation_finished
@@ -403,11 +550,17 @@ func _on_restart_button_pressed():
 	TransitionScreen.reload_scene()
 
 
+# Zurück ins Hauptmenü. Der laufende Durchgang wird dabei verworfen.
+# Der Baum kann noch pausiert sein, deshalb erst lösen.
 func _on_quit_button_pressed() -> void:
-	get_tree().quit()
+	get_tree().paused = false
+	Global.reset_progress()
+	Global.set_menu_cursor()
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 
 func _ready():
 	hud.show()
+	shadow_base_position = shadow.position
 
 	current_health = Global.player_current_health
 	total_coins = Global.player_total_coins
@@ -422,9 +575,6 @@ func _ready():
 
 	call_deferred("_apply_pending_spawn")
 
-# --- An der Tür ankommen, durch die man das Sublevel betreten hat ---
-# Wird NICHT verbraucht/geleert, damit ein Reload (Neustart/Tod) dieselbe
-# Tür wieder als Spawnpunkt verwendet, statt der Editor-Startposition.
 func _apply_pending_spawn() -> void:
 	var spawn_id = Global.pending_spawn_id
 

@@ -19,6 +19,11 @@ var max_health = 30.0
 var attack_damage = 10.0
 var enemy_id = ""
 
+# Zur Laufzeit von einem sterbenden Skelett beschworen. Solche Skulls werden
+# nicht über enemy_id, sondern über Global.summoned_skulls gespeichert.
+var is_summoned = false
+var summon_id = 0
+
 # --- Münz-Drop bei Tod: 0-2, meistens 1 ---
 const COIN_DROP_WEIGHTS = [1, 4, 1]
 
@@ -42,7 +47,7 @@ const MAX_WANDER_TIME = 5.0
 # --- Wegdrücken durch den Spieler ---
 var push_velocity: Vector2 = Vector2.ZERO
 var push_friction = 175.0
-var max_push_speed = CHASE_SPEED * 1.4 # deutlich schneller als die eigene Verfolgung, sonst kann man ihn in Ecken nie wirklich wegdrücken
+var max_push_speed = CHASE_SPEED * 0.6
 
 # --- Wegdrücken zwischen Gegnern ---
 const ENEMY_TO_ENEMY_PUSH_FORCE = 250.0
@@ -64,6 +69,11 @@ var melee_hysteresis = 8.0
 
 var wander_target_valid = false
 
+# _pick_new_wander_target() läuft über mehrere Frames. Ohne diese Sperre kann es
+# bei Dauerkontakt pro Physikframe erneut starten und dutzende Coroutinen
+# überschreiben sich gegenseitig das Navigationsziel.
+var _picking_wander_target = false
+
 # --- Stuck-Erkennung beim Wandern ---
 var stuck_timer = 0.0
 var stuck_check_position: Vector2
@@ -74,20 +84,22 @@ func _init():
 	current_health = 30.0
 
 func _ready():
-	enemy_id = Global.object_id(self)
+	# Beschworene Skulls sind flüchtig und nehmen am Speichersystem nicht teil
+	if not is_summoned:
+		enemy_id = Global.object_id(self)
 
-	# Schon getötet -> gar nicht erst erscheinen
-	if Global.dead_enemies.has(enemy_id):
-		is_dead = true
-		queue_free()
-		return
+		# Schon getötet -> gar nicht erst erscheinen
+		if Global.dead_enemies.has(enemy_id):
+			is_dead = true
+			queue_free()
+			return
 
 	super()
 	if is_queued_for_deletion():
 		return
 
 	# Gespeicherte HP wiederherstellen (Position bleibt die Spawn-Position)
-	if Global.enemy_health.has(enemy_id):
+	if not is_summoned and Global.enemy_health.has(enemy_id):
 		current_health = Global.enemy_health[enemy_id]
 
 	player = get_tree().get_first_node_in_group("player")
@@ -105,6 +117,13 @@ func _setup_navigation():
 	if not is_inside_tree() or is_dead:
 		return
 	_pick_new_wander_target()
+
+func _exit_tree():
+	if not is_summoned or is_dead:
+		return
+	if not is_instance_valid(Global):
+		return
+	Global.update_summoned_skull(summon_id, global_position, current_health)
 
 func _on_safe_velocity_computed(safe_velocity: Vector2):
 	if is_dead or is_attacking:
@@ -212,10 +231,6 @@ func apply_knockback(direction: Vector2) -> void:
 func _compose_velocity(self_velocity: Vector2) -> Vector2:
 	if push_velocity == Vector2.ZERO:
 		return self_velocity
-
-	# Bei spürbarem Rückstoß die KI-Bewegung kurz komplett unterdrücken (siehe Warrior)
-	if push_velocity.length() > PUSH_CANCEL_THRESHOLD:
-		return push_velocity
 
 	var push_dir = push_velocity.normalized()
 	var along = self_velocity.dot(push_dir)
@@ -342,9 +357,15 @@ func _start_waiting():
 		_pick_new_wander_target()
 
 func _pick_new_wander_target():
+	if _picking_wander_target:
+		return
+
+	_picking_wander_target = true
+
 	# Physik-Frame abwarten, bevor is_target_reachable() geprüft wird
 	for _attempt in range(8):
 		if is_dead:
+			_picking_wander_target = false
 			return
 
 		var random_x = randf_range(-wander_radius, wander_radius)
@@ -355,6 +376,7 @@ func _pick_new_wander_target():
 		await get_tree().physics_frame
 
 		if is_dead or not is_inside_tree():
+			_picking_wander_target = false
 			return
 
 		if nav_agent.is_target_reachable():
@@ -363,11 +385,13 @@ func _pick_new_wander_target():
 			wander_timer = 0.0
 			stuck_timer = 0.0
 			stuck_check_position = global_position
+			_picking_wander_target = false
 			return
 
 	wander_target_valid = false
 	wander_target = global_position
 	wander_timer = 0.0
+	_picking_wander_target = false
 
 func _update_animation(move_direction: Vector2, is_moving: bool, facing_override: Vector2 = Vector2.ZERO) -> void:
 	if is_attacking:
@@ -409,12 +433,17 @@ func _play_idle(direction: Vector2) -> void:
 		anim.play("idle_up")
 		anim.flip_h = false
 
-func take_damage(amount):
+# grants_reward = false, wenn der Tod nicht dem Spieler zuzurechnen ist
+# (z.B. eine Falle). Dann gibt es keine Muenzen.
+func take_damage(amount, grants_reward: bool = true):
 	if is_dead:
 		return
 
 	current_health -= amount
-	Global.enemy_health[enemy_id] = current_health
+	if is_summoned:
+		Global.update_summoned_skull(summon_id, global_position, current_health)
+	else:
+		Global.enemy_health[enemy_id] = current_health
 	print("Schädel getroffen! Restliche HP: ", current_health)
 
 	var tween = create_tween()
@@ -423,16 +452,21 @@ func take_damage(amount):
 
 	if current_health <= 0:
 		is_dead = true
-		Global.dead_enemies.append(enemy_id)
-		Global.enemy_health.erase(enemy_id)
+		if is_summoned:
+			Global.remove_summoned_skull(summon_id)
+		else:
+			Global.dead_enemies.append(enemy_id)
+			Global.enemy_health.erase(enemy_id)
 		velocity = Vector2.ZERO
 		push_velocity = Vector2.ZERO
 		attack_move_velocity = Vector2.ZERO
 
-		_drop_coins()
+		if grants_reward:
+			_drop_coins()
 
 		anim.play("death")
 		collision.set_deferred("disabled", true)
+		$Hurtbox/CollisionShape2D.set_deferred("disabled", true)
 
 		await anim.animation_finished
 		queue_free()
@@ -445,19 +479,25 @@ func _drop_coins() -> void:
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-		if area.name == "Hurtbox":
-			var hit_player = area.get_parent()
+	if area.name != "Hurtbox":
+		return
 
-			# Kein Treffer von hinten/der Seite
-			var to_player = (hit_player.global_position - global_position)
-			if to_player.length() > 0.001 and to_player.normalized().dot(attack_direction) < -0.1:
-				return
+	var hit_player = area.get_parent()
 
-			if hit_player.has_method("take_damage"):
-				hit_player.take_damage(attack_damage)
+	# Nur der Spieler wird getroffen, keine anderen Gegner
+	if not hit_player.is_in_group("player"):
+		return
 
-			if hit_player.has_method("apply_knockback"):
-				var dir = to_player
-				if dir.length() < 0.001:
-					dir = attack_direction
-				hit_player.apply_knockback(dir.normalized(), knockback_to_player)
+	# Kein Treffer von hinten/der Seite
+	var to_player = (hit_player.global_position - global_position)
+	if to_player.length() > 0.001 and to_player.normalized().dot(attack_direction) < -0.1:
+		return
+
+	if hit_player.has_method("take_damage"):
+		hit_player.take_damage(attack_damage)
+
+	if hit_player.has_method("apply_knockback"):
+		var dir = to_player
+		if dir.length() < 0.001:
+			dir = attack_direction
+		hit_player.apply_knockback(dir.normalized(), knockback_to_player)

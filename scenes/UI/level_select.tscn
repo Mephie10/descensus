@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://b7mqhs2ldk4no"]
+
+[ext_resource type="Texture2D" uid="uid://ddywomkpfxhq6" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Arrow_Large_01a.png" id="id_arrow"]
+[ext_resource type="Texture2D" uid="uid://cljdk63joyny3" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Lock_02a2.png" id="id_bl0"]
+[ext_resource type="Texture2D" uid="uid://dtt8iku5fxu" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Release_02a2.png" id="id_bl1"]
+[ext_resource type="Texture2D" uid="uid://c4dxxoxdadq3x" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Large_Press_02a3.png" id="id_bl2"]
+[ext_resource type="Texture2D" uid="uid://bc27j5ujla23j" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Lock_02a2.png" id="id_bm0"]
+[ext_resource type="Texture2D" uid="uid://ckw3vcvuwn5v" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Release_02a2.png" id="id_bm1"]
+[ext_resource type="Texture2D" uid="uid://b8vea1x6lpf23" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Button_Medium_Press_02a3.png" id="id_bm2"]
+[ext_resource type="FontFile" uid="uid://j4h2gjx61l27" path="res://assets/Font/TTF (16px)/Toriko.ttf" id="id_font"]
+[ext_resource type="Texture2D" uid="uid://3dvfb8yqve6e" path="res://assets/UI_Stone_Theme/Sprites/UI_Stone_Frame_Standard_02a.png" id="id_frame"]
+[ext_resource type="Script" uid="uid://cr5tla2aefn08" path="res://scripts/level_select.gd" id="id_script"]
+
+[node name="LevelSelect" type="Control" unique_id=216050510]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("id_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2130515935]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.05, 0.05, 0.07, 1)
+
+[node name="Panel" type="NinePatchRect" parent="." unique_id=1639932103]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -200.0
+offset_right = 280.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+pivot_offset = Vector2(280, 200)
+texture = ExtResource("id_frame")
+region_rect = Rect2(0, 0, 96, 96)
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Title" type="Label" parent="Panel" unique_id=314620794]
+modulate = Color(0.5053218, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -170.0
+offset_right = 260.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("id_font")
+theme_override_font_sizes/font_size = 104
+text = "LEVEL SELECT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelList" type="VBoxContainer" parent="Panel" unique_id=1493665570]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -74.666664
+offset_right = 105.0
+offset_bottom = 75.33334
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="LevelButtonTemplate" type="TextureButton" parent="Panel/LevelList" unique_id=377314468]
+visible = false
+custom_minimum_size = Vector2(210, 70)
+layout_mode = 2
+texture_normal = ExtResource("id_bl0")
+texture_pressed = ExtResource("id_bl1")
+texture_hover = ExtResource("id_bl2")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Panel/LevelList/LevelButtonTemplate" unique_id=1571455283]
+modulate = Color(0.5053218, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 9.333334
+offset_bottom = 9.333334
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("id_font")
+theme_override_font_sizes/font_size = 48
+text = "LEVEL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PrevPageButton" type="TextureButton" parent="Panel" unique_id=1356212808]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = 95.0
+offset_right = -170.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 40)
+texture_normal = ExtResource("id_arrow")
+stretch_mode = 4
+
+[node name="NextPageButton" type="TextureButton" parent="Panel" unique_id=2073400790]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 170.0
+offset_top = 95.0
+offset_right = 250.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(-1, 1)
+pivot_offset = Vector2(40, 40)
+texture_normal = ExtResource("id_arrow")
+stretch_mode = 4
+
+[node name="BackButton" type="TextureButton" parent="Panel" unique_id=1582033763]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = 100.0
+offset_right = 70.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(70, 35)
+texture_normal = ExtResource("id_bm0")
+texture_pressed = ExtResource("id_bm1")
+texture_hover = ExtResource("id_bm2")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Panel/BackButton" unique_id=399422120]
+modulate = Color(0.5053218, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 9.333334
+offset_bottom = 9.333334
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("id_font")
+theme_override_font_sizes/font_size = 48
+text = "BACK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Panel/PrevPageButton" to="." method="_on_prev_page_pressed"]
+[connection signal="pressed" from="Panel/NextPageButton" to="." method="_on_next_page_pressed"]
+[connection signal="pressed" from="Panel/BackButton" to="." method="_on_back_button_pressed"]
