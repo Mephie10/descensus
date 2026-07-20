@@ -93,6 +93,8 @@ var is_dead = false
 var last_direction = Vector2.DOWN
 var enemy_id = ""
 
+var _footsteps: AudioStreamPlayer2D
+
 # --- Münz-Drop bei Tod ---
 const COIN_DROP_WEIGHTS = [0, 2, 3, 5, 1]
 
@@ -116,6 +118,7 @@ func _ready():
 		current_health = Global.enemy_health[enemy_id]
 
 	player = get_tree().get_first_node_in_group("player")
+	_footsteps = AudioManager.attach_loop(self, "mage_footsteps")
 	start_position = global_position
 	shadow_base_position = shadow.position
 	stuck_check_position = global_position
@@ -548,6 +551,8 @@ func _spawn_projectile(shot_direction: Vector2, panic: bool = false) -> void:
 	if not is_inside_tree():
 		return
 
+	AudioManager.play_at("mage_attack", global_position)
+
 	var direction = shot_direction
 
 	if is_instance_valid(player):
@@ -587,9 +592,11 @@ func _spawn_projectile(shot_direction: Vector2, panic: bool = false) -> void:
 
 func update_animation(facing_override: Vector2 = Vector2.ZERO) -> void:
 	if is_attacking:
+		_set_footsteps(false)
 		return
 
 	var is_moving = velocity.length() > 5.0
+	_set_footsteps(is_moving)
 	var move_dir = velocity.normalized() if is_moving else Vector2.ZERO
 	var facing = facing_override if facing_override != Vector2.ZERO else move_dir
 
@@ -652,6 +659,7 @@ func take_damage(amount, grants_reward: bool = true):
 
 	current_health -= amount
 	Global.enemy_health[enemy_id] = current_health
+	AudioManager.play_at("enemy_hit", global_position)
 
 	var tween = create_tween()
 	tween.tween_property(anim, "modulate", Color.RED, 0.15)
@@ -666,6 +674,7 @@ func die_with_animation(grants_reward: bool = true):
 
 	is_dead = true
 	is_attacking = false
+	_set_footsteps(false)
 	Global.dead_enemies.append(enemy_id)
 	Global.enemy_health.erase(enemy_id)
 
@@ -692,3 +701,12 @@ func _drop_coins() -> void:
 	var amount = Global.weighted_random(COIN_DROP_WEIGHTS)
 	if amount > 0 and is_instance_valid(player) and player.has_method("add_coins"):
 		player.add_coins(amount)
+
+# Startet/stoppt den Fußschritt-Loop nur bei echtem Zustandswechsel.
+func _set_footsteps(active: bool) -> void:
+	if _footsteps == null:
+		return
+	if active and not _footsteps.playing:
+		_footsteps.play()
+	elif not active and _footsteps.playing:
+		_footsteps.stop()

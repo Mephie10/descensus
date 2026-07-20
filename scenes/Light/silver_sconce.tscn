@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://35mn584dj84c"]
 
 [ext_resource type="Texture2D" uid="uid://ca684awpoow6y" path="res://assets/Props/Animated/silver_sconce.png" id="1_srxh2"]
+[ext_resource type="Script" path="res://scripts/torch_ambience.gd" id="2_amb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cs7ik"]
 atlas = ExtResource("1_srxh2")
@@ -32,6 +33,7 @@ animations = [{
 }]
 
 [node name="silver_sconce" type="Node2D" unique_id=408966746]
+script = ExtResource("2_amb")
 z_index = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=680401882]

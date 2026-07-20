@@ -42,6 +42,9 @@ var is_dead = false
 var low_hp_tween: Tween = null
 var total_coins = 0
 
+# Dauerhafter Fußschritt-Loop, läuft nur während der Spieler tatsächlich rennt.
+var _footsteps: AudioStreamPlayer2D
+
 # Aktueller Rückstoß-Impuls
 var knockback_velocity: Vector2 = Vector2.ZERO
 
@@ -92,6 +95,7 @@ func _physics_process(delta):
 	knockback_velocity = knockback_velocity.move_toward(Vector2.ZERO, KNOCKBACK_FRICTION * delta)
 
 	if is_attacking or is_drinking or is_interacting:
+		_set_footsteps(false)
 		velocity = knockback_velocity
 		move_and_slide()
 		return
@@ -108,6 +112,7 @@ func _physics_process(delta):
 
 	if direction != Vector2.ZERO:
 		velocity = direction * SPEED * slow_factor
+		_set_footsteps(true)
 
 		# --- BEWEGUNG ---
 		if direction.x > 0:
@@ -136,6 +141,7 @@ func _physics_process(delta):
 
 	else:
 		velocity = Vector2.ZERO
+		_set_footsteps(false)
 		_play_idle()
 
 	velocity += knockback_velocity
@@ -163,6 +169,15 @@ func _play_idle():
 		anim.flip_h = false
 		anim.play("idle_up")
 		_apply_shadow_offset(SHADOW_OFFSET_UP)
+
+# Startet/stoppt den Fußschritt-Loop nur bei echtem Zustandswechsel.
+func _set_footsteps(active: bool) -> void:
+	if _footsteps == null:
+		return
+	if active and not _footsteps.playing:
+		_footsteps.play()
+	elif not active and _footsteps.playing:
+		_footsteps.stop()
 
 func apply_knockback(direction: Vector2, strength: float = KNOCKBACK_TAKEN) -> void:
 	if is_dead:
@@ -258,6 +273,8 @@ func attack():
 	is_attacking = true
 	can_attack = false
 	velocity = Vector2.ZERO
+	_set_footsteps(false)
+	AudioManager.play("player_attack")
 
 	# --- ANGRIFF ---
 	if last_dir == "right":
@@ -329,6 +346,7 @@ func add_healing_flask() -> void:
 	healing_flask_count += 1
 	Global.player_healing_flasks = healing_flask_count
 	_update_healing_flask_hud()
+	AudioManager.play("healingflask_get")
 
 func _update_healing_flask_hud():
 	for i in healing_flask_icons.size():
@@ -344,6 +362,7 @@ func add_key(value: int) -> void:
 	keys.append(value)
 	Global.player_keys = keys.duplicate()
 	_update_key_hud()
+	AudioManager.play("key_get")
 
 func use_key(value: int) -> bool:
 	var idx = keys.find(value)
@@ -390,6 +409,7 @@ func heal():
 	heal_pending = true
 	healing_flask_count -= 1
 	Global.player_healing_flasks = healing_flask_count
+	AudioManager.play("healingflask_use")
 
 	velocity = Vector2.ZERO
 	_play_idle()
@@ -431,6 +451,7 @@ func heal():
 	Global.player_current_health = current_health
 	health_bar.value = current_health
 	_update_low_hp_blink()
+	AudioManager.play("healingflask_heal")
 
 # Beim Sublevel-Wechsel wird der Spieler mitten in der laufenden Heilung
 # freigegeben und die Coroutine bricht ab. Ohne das hier wäre der Trank
@@ -481,9 +502,17 @@ func _on_hitbox_body_entered(body):
 func _apply_shadow_offset(offset: Vector2) -> void:
 	shadow.position = shadow_base_position + offset
 
-func take_damage(amount):
+func take_damage(amount, hit_type := "melee"):
 	if is_dead:
 		return
+
+	# Trefferklang nach Schadensquelle: Pfeil, Magie oder Nahkampf/Falle.
+	var hit_sound := "player_hit"
+	if hit_type == "arrow":
+		hit_sound = "player_hit_arrow"
+	elif hit_type == "magic":
+		hit_sound = "player_hit_magic"
+	AudioManager.play(hit_sound)
 
 	current_health -= amount
 	Global.player_current_health = current_health
@@ -509,6 +538,8 @@ func die():
 
 	is_dead = true
 	velocity = Vector2.ZERO
+	_set_footsteps(false)
+	AudioManager.play("player_death")
 	hitbox_shape.set_deferred("disabled", true)
 
 	# Sonst schlagen Gegner und Projektile weiter auf die Leiche ein
@@ -573,9 +604,24 @@ func _ready():
 	coin_label.text = str(total_coins)
 	_update_healing_flask_hud()
 
+	_footsteps = AudioManager.attach_loop(self, "player_footsteps")
+
+	# Hörposition fest an den Spieler koppeln, damit Weltgeräusche mit der
+	# Entfernung zum Spieler leiser werden - unabhängig von Kamera-Zoom/-Versatz.
+	var listener := AudioListener2D.new()
+	add_child(listener)
+	listener.make_current()
+
 	call_deferred("_apply_pending_spawn")
 
 func _apply_pending_spawn() -> void:
+	# Tür fällt hinter dem Spieler zu - beim frischen Betreten aus dem Menü
+	# genauso wie beim Durchschreiten einer Tür ins nächste Sublevel, aber nicht
+	# beim Neustart nach dem Tod.
+	if Global.play_door_close:
+		Global.play_door_close = false
+		AudioManager.play("door_close")
+
 	var spawn_id = Global.pending_spawn_id
 
 	if spawn_id == "" or not is_inside_tree():
@@ -610,8 +656,15 @@ func _stop_low_hp_blink():
 		low_hp_tween = null
 	$HUD/HealthFrame.modulate = Color.WHITE
 
-func add_coins(amount):
+# coin_type steuert den Aufsammel-Klang. Direkte Pickups geben "gold"/"silver"
+# mit; alle anderen Gutschriften (Gegnerdrops, Truhen, Kisten) nutzen den
+# silbernen Standardklang.
+func add_coins(amount, coin_type := "silver"):
 	total_coins += amount
 	Global.player_total_coins = total_coins
 	coin_label.text = str(total_coins)
+
+	var pickup_sound := "golden_coin_pickup" if coin_type == "gold" else "silver_coin_pickup"
+	AudioManager.play(pickup_sound)
+
 	print("Münzen gesammelt! Aktueller Stand: ", total_coins)

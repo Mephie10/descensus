@@ -6,14 +6,17 @@
 [ext_resource type="Texture2D" uid="uid://bn2wtwnjqdx0j" path="res://assets/Tilesets/Objects_Overlay.png" id="3_o1ia2"]
 [ext_resource type="Texture2D" uid="uid://d13p25amibpld" path="res://assets/Tilesets/Props_Static.png" id="4_yxsdw"]
 [ext_resource type="Texture2D" uid="uid://c6mgbf87d3g06" path="res://assets/Tilesets/Items_Static.png" id="5_dxb8h"]
+[ext_resource type="PackedScene" uid="uid://bwq7hxm3nvt6d" path="res://scenes/cobweb.tscn" id="7_p72ob"]
 [ext_resource type="PackedScene" uid="uid://cltgsk5nonkoi" path="res://scenes/Barrels/barrel.tscn" id="7_s8ao2"]
 [ext_resource type="PackedScene" uid="uid://d4je1lwidqmf1" path="res://scenes/Barrels/barrel_silver_coin.tscn" id="8_i3346"]
 [ext_resource type="PackedScene" uid="uid://cf4w0iy3hjoqs" path="res://scenes/Light/golden_sconce.tscn" id="9_017ip"]
 [ext_resource type="PackedScene" uid="uid://bxwexyv54jjop" path="res://scenes/Enemies/skeleton_warrior.tscn" id="10_dxb8h"]
-[ext_resource type="PackedScene" uid="uid://cxakpta00hkn" path="res://scenes/Chests/golden_chest.tscn" id="11_s8ao2"]
+[ext_resource type="PackedScene" uid="uid://ntq858xmu5u7" path="res://scenes/Chests/crate.tscn" id="11_g5t5o"]
 [ext_resource type="PackedScene" uid="uid://jq0gcnhq3tyw" path="res://scenes/Level/door.tscn" id="12_i3346"]
 [ext_resource type="PackedScene" uid="uid://cspbrenytwko8" path="res://scenes/Enemies/skeleton_archer.tscn" id="13_archer"]
 [ext_resource type="PackedScene" uid="uid://cq4br8t0h2ns6" path="res://scenes/trap.tscn" id="14_i48uv"]
+[ext_resource type="PackedScene" uid="uid://beoyoc48xpq8" path="res://scenes/Enemies/skull.tscn" id="15_6j3jj"]
+[ext_resource type="PackedScene" uid="uid://cuvi1vxja38vi" path="res://scenes/healing_flask.tscn" id="17_qbfoj"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_trtic"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -87,7 +90,7 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
 agent_radius = 0.0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wrekh"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p72ob"]
 texture = ExtResource("2_sjtqr")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
@@ -227,7 +230,7 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 navigation_layer_0/layers = 1
-sources/0 = SubResource("TileSetAtlasSource_wrekh")
+sources/0 = SubResource("TileSetAtlasSource_p72ob")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v2p2f"]
 texture = ExtResource("3_o1ia2")
@@ -414,7 +417,7 @@ sources/1 = SubResource("TileSetAtlasSource_t2ct2")
 [node name="Level1_2" type="Node2D" unique_id=2033195073]
 
 [node name="Player" parent="." unique_id=337135565 instance=ExtResource("1_s68pt")]
-position = Vector2(13, 48)
+position = Vector2(-82, 44)
 
 [node name="Coins" type="Node" parent="." unique_id=1635827555]
 
@@ -424,7 +427,7 @@ position = Vector2(131, 112)
 [node name="MapLayers" type="Node" parent="." unique_id=198020501]
 
 [node name="TileMapLayer0" type="TileMapLayer" parent="MapLayers" unique_id=456309348]
-tile_map_data = PackedByteArray("AAD9////AAABAAEAAAD9/wAAAAABAAIAAAD9/wEAAAADAAIAAAD+////AAACAAEAAAD+/wAAAAACAAIAAAD+/wEAAAACAAEAAAD/////AAADAAEAAAD//wAAAAADAAIAAAAAAP//AAAEAAEAAGAAAAAAAAADAAEAAGAAAAEAAAAEAAEAAAAAAAIAAAAEAAIAAAABAAIAAAABAAIAAGACAAIAAAABAAMAAGABAAEAAAACAAIAAGACAAEAAAACAAMAAGABAAAAAAADAAIAAGACAAAAAAADAAMAAGABAP//AAAEAAIAAGACAP//AAAEAAMAAGAAAAMAAAAEAAMAAAD//wMAAAADAAMAAAD+/wIAAAACAAIAAAD+/wMAAAACAAMAAAD9/wIAAAABAAIAAAD9/wMAAAABAAMAAAAFAP//AAAEAAEAAHAEAP//AAAEAAIAAHADAP//AAAEAAMAAHAFAAAAAAADAAEAAHAEAAAAAAADAAIAAHADAAAAAAADAAMAAHAFAAEAAAACAAEAAHAEAAEAAAACAAIAAHADAAEAAAACAAMAAHAFAAIAAAABAAEAAHAEAAIAAAABAAIAAHADAAIAAAABAAMAAHABAAMAAAABAAIAAAACAAMAAAACAAIAAAADAAMAAAADAAIAAAAEAAMAAAAEAAIAAAAFAAMAAAADAAEAAAD9//7/AAABAAAAAAD+//7/AAACAAAAAAD///7/AAADAAAAAAAAAP7/AAAEAAAAAAABAP7/AAABAAAAAAACAP7/AAABAAAAAAADAP7/AAACAAAAAAAEAP7/AAADAAAAAAAFAP7/AAAEAAAAAAAGAP7/AAAFAAAAAAAGAP//AAAFAAEAAAAGAAAAAAAFAAIAAAAGAAEAAAAFAAEAAAAGAAMAAAAFAAMAAAAGAAQAAAAFAAQAAAACAAQAAAABAAQAAAADAAQAAAACAAQAAAAEAAQAAAADAAQAAAAFAAQAAAAEAAQAAAD+/wQAAAACAAQAAAD//wQAAAADAAQAAAAAAAQAAAAEAAQAAAABAAQAAAAEAAQAAAD9/wQAAAABAAQAAAD8/wQAAAAAAAQAAAD8/wEAAAADAAIAAAD8/wIAAAAAAAIAAAD8/wMAAAAAAAMAAAD8//7/AAAAAAAAAAD8////AAAAAAEAAAD8/wAAAAAAAAIAAAAGAAIAAAADAAMAAAAHAAIAAAAGAAMAAGD7/wEAAAAGAAQAAGA=")
+tile_map_data = PackedByteArray("AAD9////AAABAAEAAAD9/wAAAAABAAIAAAD9/wEAAAADAAIAAAD+////AAACAAEAAAD+/wAAAAACAAIAAAD+/wEAAAACAAEAAAD/////AAADAAEAAAD//wAAAAADAAIAAAAAAP//AAAEAAEAAGAAAAAAAAADAAEAAGAAAAEAAAAEAAEAAAAAAAIAAAAEAAIAAAABAAIAAAABAAIAAGACAAIAAAABAAMAAGABAAEAAAACAAIAAGACAAEAAAACAAMAAGABAAAAAAADAAIAAGACAAAAAAADAAMAAGABAP//AAAEAAIAAGACAP//AAAEAAMAAGAAAAMAAAAEAAMAAAD//wMAAAADAAMAAAD+/wIAAAACAAIAAAD+/wMAAAACAAMAAAD9/wIAAAABAAIAAAD9/wMAAAABAAMAAAAFAP//AAAEAAEAAHAEAP//AAAEAAIAAHADAP//AAAEAAMAAHAFAAAAAAADAAEAAHAEAAAAAAADAAIAAHADAAAAAAADAAMAAHAFAAEAAAACAAEAAHAEAAEAAAACAAIAAHADAAEAAAACAAMAAHAFAAIAAAABAAEAAHAEAAIAAAABAAIAAHADAAIAAAABAAMAAHABAAMAAAABAAIAAAACAAMAAAACAAIAAAADAAMAAAADAAIAAAAEAAMAAAAEAAIAAAAFAAMAAAADAAEAAAD9//7/AAABAAAAAAD+//7/AAACAAAAAAD///7/AAADAAAAAAAAAP7/AAAEAAAAAAABAP7/AAABAAAAAAACAP7/AAABAAAAAAADAP7/AAACAAAAAAAEAP7/AAADAAAAAAAFAP7/AAAEAAAAAAAGAP7/AAAFAAAAAAAGAP//AAAFAAEAAAAGAAAAAAAFAAIAAAAGAAEAAAAFAAEAAAAGAAMAAAAFAAMAAAAGAAQAAAAFAAQAAAAEAAQAAAAGAAAAAAAFAAQAAAAEAAQAAAD9/wQAAAABAAQAAAD8/wQAAAAAAAQAAAD8/wEAAAADAAIAAAD8/wIAAAAAAAIAAAD8/wMAAAAAAAMAAAD8//7/AAAAAAAAAAD8////AAAAAAEAAAD8/wAAAAAAAAIAAAAGAAIAAAADAAMAAAAHAAIAAAAGAAMAAGD7/wEAAAAGAAQAAGD+/wQAAAAIAAAAAAD+/wUAAAAAAAEAAAD+/wYAAAAAAAIAAAD+/wcAAAAAAAMAAAD+/wgAAAAAAAQAAAD//wgAAAABAAQAAAAAAAgAAAABAAQAAAABAAgAAAACAAQAAAACAAgAAAADAAQAAAADAAgAAAAEAAQAAAAEAAUAAAAFAAEAAAAEAAYAAAAFAAIAAAAEAAcAAAAFAAMAAAAEAAgAAAAFAAQAAAD//wQAAAABAAEAAAD//wUAAAABAAIAAAD//wYAAAABAAMAAAAAAAQAAAACAAEAAAAAAAUAAAACAAIAAAAAAAYAAAACAAMAAAABAAQAAAADAAEAAAABAAUAAAADAAIAAAABAAYAAAADAAMAAAACAAQAAAAEAAEAAAACAAUAAAAEAAIAAAACAAYAAAAEAAMAAAD//wcAAAABAAMAAAAAAAcAAAACAAMAAAABAAcAAAADAAMAAAACAAcAAAAEAAMAAAADAAQAAAAEAAEAAAADAAUAAAAEAAIAAAADAAYAAAAEAAMAAAADAAcAAAADAAEAAAD//wEAAAADAAEAAAD//wIAAAADAAIAAAA=")
 tile_set = SubResource("TileSet_jxfff")
 
 [node name="TileMapLayer1" type="TileMapLayer" parent="MapLayers" unique_id=1072002903]
@@ -436,6 +439,15 @@ tile_set = SubResource("TileSet_n1w2u")
 z_index = 4
 tile_map_data = PackedByteArray("AAAFAAMAAAADAAAAAAD9/wMAAAADAAEAAAD9/wAAAAADAAAAAAD9//7/AAAAAAAAAAA=")
 tile_set = SubResource("TileSet_80xb7")
+
+[node name="Cobweb" parent="MapLayers" unique_id=1927463815 instance=ExtResource("7_p72ob")]
+position = Vector2(-11, 212)
+
+[node name="Cobweb2" parent="MapLayers" unique_id=1819418928 instance=ExtResource("7_p72ob")]
+position = Vector2(54, 150)
+
+[node name="Cobweb3" parent="MapLayers" unique_id=1232824772 instance=ExtResource("7_p72ob")]
+position = Vector2(97, 218)
 
 [node name="Destructibles" type="Node" parent="." unique_id=1413409713]
 
@@ -450,7 +462,27 @@ position = Vector2(177, -16)
 [node name="golden_sconce" parent="AnimatedProps" unique_id=1434347657 instance=ExtResource("9_017ip")]
 position = Vector2(-54, -50)
 
+[node name="Crate" parent="." unique_id=1199433031 instance=ExtResource("11_g5t5o")]
+position = Vector2(48, 240)
+coin_reward = 1
+grants_key_value = 1
+
 [node name="Enemies" type="Node" parent="." unique_id=1184464848]
+
+[node name="Trap" parent="Enemies" unique_id=1583920477 instance=ExtResource("14_i48uv")]
+position = Vector2(16, 176)
+
+[node name="Trap2" parent="Enemies" unique_id=1361619648 instance=ExtResource("14_i48uv")]
+position = Vector2(97, 176)
+
+[node name="SkeletonWarrior" parent="Enemies" unique_id=1024088533 instance=ExtResource("10_dxb8h")]
+position = Vector2(100, 38)
+
+[node name="SkeletonArcher" parent="Enemies" unique_id=-1910256740 instance=ExtResource("13_archer")]
+position = Vector2(160, 67)
+
+[node name="Skull" parent="Enemies" unique_id=443707851 instance=ExtResource("15_6j3jj")]
+position = Vector2(-18, 174)
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1929018793]
 offset_left = -817.0
@@ -458,18 +490,6 @@ offset_top = -470.0
 offset_right = 899.0
 offset_bottom = 644.0
 color = Color(0.07058824, 0.07058824, 0.08627451, 1)
-
-[node name="SkeletonWarrior" parent="." unique_id=1024088533 instance=ExtResource("10_dxb8h")]
-position = Vector2(100, 57)
-
-[node name="SkeletonArcher" parent="." unique_id=-1910256740 instance=ExtResource("13_archer")]
-position = Vector2(140, -2)
-
-[node name="GoldenChest" parent="." unique_id=1199433031 instance=ExtResource("11_s8ao2")]
-position = Vector2(-21, -15)
-coin_reward = 10
-healing_flask_reward = 1
-grants_key_value = 2
 
 [node name="Door" parent="." unique_id=1602873714 instance=ExtResource("12_i3346")]
 position = Vector2(-101, 50)
@@ -491,17 +511,16 @@ position = Vector2(12, 1)
 
 [node name="Door2" parent="." unique_id=109816727 instance=ExtResource("12_i3346")]
 position = Vector2(192, 82)
-is_level_goal = true
-required_key_value = 2
+next_sublevel_path = "uid://bh5gciejt6ri"
+required_key_value = 1
+spawn_id = "level1_2_door2"
+target_spawn_id = "Level1_3_door"
 
-[node name="SilverLock" parent="Door2" index="2" unique_id=577668625]
+[node name="BronzeLock" parent="Door2" index="1" unique_id=1837955568]
 visible = true
 
-[node name="Trap" parent="." unique_id=1583920477 instance=ExtResource("14_i48uv")]
-position = Vector2(-16, 48)
-
-[node name="Trap2" parent="." unique_id=1361619648 instance=ExtResource("14_i48uv")]
-position = Vector2(-16, 80)
+[node name="HealingFlask" parent="." unique_id=403026442 instance=ExtResource("17_qbfoj")]
+position = Vector2(16, 79)
 
 [editable path="Door"]
 [editable path="Door2"]

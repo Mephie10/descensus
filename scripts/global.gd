@@ -43,6 +43,11 @@ var checkpoint_enemy_health: Dictionary = {}
 var pending_spawn_id: String = ""
 var checkpoint_pending_spawn_id: String = ""
 
+# Türgeräusch beim Ankommen: true, wenn der Spieler ein Level frisch aus dem Menü
+# betritt oder durch eine Tür ins nächste Sublevel geht - aber nicht beim
+# Neustart nach dem Tod. Transient, kein Teil des Checkpoints.
+var play_door_close: bool = false
+
 # Gewichteter Zufallswert: weights[i] = Gewicht für Ergebnis i
 func weighted_random(weights: Array) -> int:
 	var total = 0

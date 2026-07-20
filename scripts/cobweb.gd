@@ -70,6 +70,8 @@ func smash() -> void:
 	is_destroyed = true
 	Global.destroyed_cobwebs.append(Global.object_id(self))
 
+	AudioManager.play_at("cobweb_destroyed", global_position)
+
 	# Vor dem Verschwinden die Bremse lösen, sonst bleibt der Spieler langsam
 	_release_all()
 	queue_free()

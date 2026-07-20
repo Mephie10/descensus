@@ -35,6 +35,8 @@ var is_waiting = false
 var is_attacking = false
 var can_attack = true
 
+var _footsteps: AudioStreamPlayer2D
+
 var wander_radius = 60.0
 var detection_radius = 110.0
 var attack_radius = 34.0
@@ -103,6 +105,7 @@ func _ready():
 		current_health = Global.enemy_health[enemy_id]
 
 	player = get_tree().get_first_node_in_group("player")
+	_footsteps = AudioManager.attach_loop(self, "skull_footsteps")
 	start_position = global_position
 	stuck_check_position = global_position
 
@@ -242,6 +245,7 @@ func _compose_velocity(self_velocity: Vector2) -> Vector2:
 func _attack_player():
 	is_attacking = true
 	can_attack = false
+	_set_footsteps(false)
 
 	var direction = (player.global_position - global_position).normalized()
 	last_direction = direction
@@ -395,10 +399,13 @@ func _pick_new_wander_target():
 
 func _update_animation(move_direction: Vector2, is_moving: bool, facing_override: Vector2 = Vector2.ZERO) -> void:
 	if is_attacking:
+		_set_footsteps(false)
 		return
 
 	if velocity.length() < 5.0:
 		is_moving = false
+
+	_set_footsteps(is_moving)
 
 	var facing = facing_override if facing_override != Vector2.ZERO else move_direction
 
@@ -445,6 +452,7 @@ func take_damage(amount, grants_reward: bool = true):
 	else:
 		Global.enemy_health[enemy_id] = current_health
 	print("Schädel getroffen! Restliche HP: ", current_health)
+	AudioManager.play_at("enemy_hit", global_position)
 
 	var tween = create_tween()
 	tween.tween_property(anim, "modulate", Color.RED, 0.15)
@@ -452,6 +460,7 @@ func take_damage(amount, grants_reward: bool = true):
 
 	if current_health <= 0:
 		is_dead = true
+		_set_footsteps(false)
 		if is_summoned:
 			Global.remove_summoned_skull(summon_id)
 		else:
@@ -476,6 +485,15 @@ func _drop_coins() -> void:
 	var amount = Global.weighted_random(COIN_DROP_WEIGHTS)
 	if amount > 0 and is_instance_valid(player) and player.has_method("add_coins"):
 		player.add_coins(amount)
+
+# Startet/stoppt den Fußschritt-Loop nur bei echtem Zustandswechsel.
+func _set_footsteps(active: bool) -> void:
+	if _footsteps == null:
+		return
+	if active and not _footsteps.playing:
+		_footsteps.play()
+	elif not active and _footsteps.playing:
+		_footsteps.stop()
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:

@@ -22,4 +22,4 @@ texture = ExtResource("2_cobweb")
 shape = SubResource("RectangleShape2D_cobweb")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1927463818]
-radius = 20.0
+radius = 19.0

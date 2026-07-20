@@ -11,9 +11,7 @@ const LEVELS_PER_PAGE = 2
 # Reihenfolge im Menü schon sichtbar.
 const LEVELS = [
 	{ "name": "LEVEL 1", "scene": "res://scenes/Level/Level 1/level1_1.tscn", "unlocked": true },
-	{ "name": "LEVEL 2", "scene": "", "unlocked": false },
-	{ "name": "LEVEL 3", "scene": "", "unlocked": false },
-	{ "name": "LEVEL 4", "scene": "", "unlocked": false },
+	{ "name": "LEVEL 2", "scene": "res://scenes/Level/Level 2/level_2_1.tscn", "unlocked": true },
 ]
 
 const ARROW_HOVER_TINT = Color(1.3, 1.3, 1.3)
@@ -87,6 +85,9 @@ func _on_level_pressed(scene_path: String) -> void:
 	# Sitzung, weil der Fortschritt nur im Speicher liegt.
 	Global.reset_progress()
 	Global.set_gameplay_cursor()
+
+	# Auch der Einstieg ins Level soll mit dem zufallenden Türgeräusch beginnen.
+	Global.play_door_close = true
 
 	get_tree().change_scene_to_file(scene_path)
 

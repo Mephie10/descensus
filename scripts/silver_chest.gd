@@ -48,6 +48,7 @@ func _open() -> void:
 	is_opened = true
 	Global.opened_chests.append(chest_id)
 	_update_visuals()
+	AudioManager.play_at("chests_open", global_position)
 
 	if coin_reward > 0 and player_body and player_body.has_method("add_coins"):
 		player_body.add_coins(coin_reward)

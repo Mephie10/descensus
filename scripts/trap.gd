@@ -69,6 +69,7 @@ func _start_strike() -> void:
 	_is_striking = true
 	_already_hit.clear()
 	_timer = 0.0
+	AudioManager.play_at("trap_attack", global_position)
 	_show_frame(FIRST_STRIKE_FRAME)
 
 func _advance_strike() -> void:

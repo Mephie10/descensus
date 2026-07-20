@@ -65,6 +65,9 @@ func _process(_delta):
 
 		_unlock()
 
+		# Nicht-positional, damit der Klang den Szenenwechsel überlebt.
+		AudioManager.play("door_open")
+
 		if is_level_goal:
 			# Der Fortschritt bleibt erhalten, der Siegesbildschirm zeigt die
 			# gesammelten Münzen an und räumt danach selbst auf.
@@ -77,6 +80,7 @@ func _process(_delta):
 			return
 
 		Global.pending_spawn_id = target_spawn_id
+		Global.play_door_close = true
 		Global.save_checkpoint()
 		TransitionScreen.change_scene(next_sublevel_path)
 

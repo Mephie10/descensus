@@ -19,6 +19,7 @@ func smash():
 
 	is_destroyed = true
 	Global.destroyed_barrels.append(Global.object_id(self))
+	AudioManager.play_at("barrels_destroyed", global_position)
 	_show_destroyed()
 
 # --- Zerstörte Optik ---

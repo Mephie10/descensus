@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b7t82rf3kbb5l"]
 
 [ext_resource type="Texture2D" uid="uid://dnkre8mcfvfus" path="res://assets/Props/Animated/magic_torch_strip.png" id="1_87xio"]
+[ext_resource type="Script" path="res://scripts/torch_ambience.gd" id="2_amb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ujieo"]
 atlas = ExtResource("1_87xio")
@@ -32,6 +33,7 @@ animations = [{
 }]
 
 [node name="magic_torch" type="Node2D" unique_id=1328690673]
+script = ExtResource("2_amb")
 z_index = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=399737174]

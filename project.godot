@@ -13,12 +13,13 @@ config_version=5
 config/name="Descensus"
 run/main_scene="uid://c1p8sdmq4habt"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://b65n065j3edi8"
 
 [autoload]
 
 Global="*uid://biehexywcpquu"
 TransitionScreen="*uid://dqv33603f783k"
+AudioManager="*res://scripts/audio_manager.gd"
 
 [display]
 

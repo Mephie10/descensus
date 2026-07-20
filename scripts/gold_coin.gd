@@ -16,5 +16,5 @@ func _on_body_entered(body):
 		if body.has_method("add_coins"):
 			collected = true
 			Global.collected_pickups.append(Global.object_id(self))
-			body.add_coins(5)
+			body.add_coins(5, "gold")
 			queue_free()

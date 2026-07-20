@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://bn2wtwnjqdx0j" path="res://assets/Tilesets/Objects_Overlay.png" id="3_1wn2o"]
 [ext_resource type="Texture2D" uid="uid://d13p25amibpld" path="res://assets/Tilesets/Props_Static.png" id="4_x87vh"]
 [ext_resource type="Texture2D" uid="uid://c6mgbf87d3g06" path="res://assets/Tilesets/Items_Static.png" id="5_7qyao"]
-[ext_resource type="PackedScene" uid="uid://jq0gcnhq3tyw" path="res://scenes/Level/door.tscn" id="6_ry2y6"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_trtic"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -403,9 +402,6 @@ tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_c5mff")
 sources/1 = SubResource("TileSetAtlasSource_t2ct2")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3aw20"]
-size = Vector2(40, 40)
-
 [node name="LevelTemplate" type="Node2D" unique_id=2033195073]
 
 [node name="Player" parent="." unique_id=337135565 instance=ExtResource("1_b5ji4")]
@@ -431,19 +427,11 @@ tile_set = SubResource("TileSet_80xb7")
 
 [node name="Enemies" type="Node" parent="." unique_id=1184464848]
 
+[node name="Flasks" type="Node" parent="." unique_id=499946403]
+
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1929018793]
 offset_left = -814.0
 offset_top = -477.0
 offset_right = 902.0
 offset_bottom = 637.0
 color = Color(0.07058824, 0.07058824, 0.08627451, 1)
-
-[node name="Door" parent="." unique_id=1602873714 instance=ExtResource("6_ry2y6")]
-z_index = 5
-position = Vector2(207, 18)
-
-[node name="CollisionShape2D" parent="Door" index="0" unique_id=961441942]
-position = Vector2(-3.75, 2)
-shape = SubResource("RectangleShape2D_3aw20")
-
-[editable path="Door"]

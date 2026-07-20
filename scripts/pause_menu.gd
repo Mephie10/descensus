@@ -26,10 +26,6 @@ func toggle_pause():
 func _on_resume_button_pressed() -> void:
 	toggle_pause()
 
-
-# Zurück ins Hauptmenü. Der laufende Durchgang wird dabei verworfen. Die Pause
-# muss vorher raus, sonst startet die neue Szene in einem pausierten Baum und
-# reagiert nicht.
 func _on_quit_button_pressed() -> void:
 	get_tree().paused = false
 	Global.reset_progress()

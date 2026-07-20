@@ -44,7 +44,7 @@ func _on_area_entered(area: Area2D) -> void:
 		hit_player.apply_slow(slow_factor, slow_duration)
 
 	if hit_player.has_method("take_damage"):
-		hit_player.take_damage(damage)
+		hit_player.take_damage(damage, "magic")
 
 	if hit_player.has_method("apply_knockback"):
 		hit_player.apply_knockback(direction.normalized(), knockback_strength)

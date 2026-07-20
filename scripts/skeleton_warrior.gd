@@ -67,6 +67,8 @@ var last_dir = "down"
 var attack_interrupted = false
 var enemy_id = ""
 
+var _footsteps: AudioStreamPlayer2D
+
 # --- Münz-Drop bei Tod: 0-3, meistens 2 ---
 const COIN_DROP_WEIGHTS = [1, 2, 5, 1]
 
@@ -90,6 +92,7 @@ func _ready():
 		current_health = Global.enemy_health[enemy_id]
 
 	player = get_tree().get_first_node_in_group("player")
+	_footsteps = AudioManager.attach_loop(self, "warrior_footsteps")
 	hitbox_shape.set_deferred("disabled", true)
 	start_position = global_position
 	shadow_base_position = shadow.position
@@ -334,6 +337,8 @@ func attack():
 	attack_interrupted = false
 	nav_agent.set_velocity(Vector2.ZERO)
 	velocity = Vector2.ZERO
+	_set_footsteps(false)
+	AudioManager.play_at("warrior_attack", global_position)
 
 	var lunge_dir = Vector2.DOWN
 
@@ -437,9 +442,11 @@ func _end_attack_early() -> void:
 
 func update_animation(facing_override: Vector2 = Vector2.ZERO) -> void:
 	if is_attacking:
+		_set_footsteps(false)
 		return
 
 	if velocity != Vector2.ZERO:
+		_set_footsteps(true)
 		var dir = facing_override if facing_override != Vector2.ZERO else velocity
 
 		if abs(dir.x) > abs(dir.y):
@@ -465,6 +472,7 @@ func update_animation(facing_override: Vector2 = Vector2.ZERO) -> void:
 				last_dir = "up"
 				_apply_shadow_offset(SHADOW_OFFSET_UP)
 	else:
+		_set_footsteps(false)
 		if last_dir == "right":
 			anim.flip_h = false
 			anim.play("idle_side")
@@ -508,6 +516,7 @@ func take_damage(amount, grants_reward: bool = true):
 
 	current_health -= amount
 	Global.enemy_health[enemy_id] = current_health
+	AudioManager.play_at("enemy_hit", global_position)
 
 	var tween = create_tween()
 	tween.tween_property(anim, "modulate", Color.RED, 0.15)
@@ -522,6 +531,7 @@ func die_with_animation(grants_reward: bool = true):
 
 	is_dead = true
 	is_attacking = false
+	_set_footsteps(false)
 	Global.dead_enemies.append(enemy_id)
 	Global.enemy_health.erase(enemy_id)
 
@@ -548,3 +558,12 @@ func _drop_coins() -> void:
 	var amount = Global.weighted_random(COIN_DROP_WEIGHTS)
 	if amount > 0 and is_instance_valid(player) and player.has_method("add_coins"):
 		player.add_coins(amount)
+
+# Startet/stoppt den Fußschritt-Loop nur bei echtem Zustandswechsel.
+func _set_footsteps(active: bool) -> void:
+	if _footsteps == null:
+		return
+	if active and not _footsteps.playing:
+		_footsteps.play()
+	elif not active and _footsteps.playing:
+		_footsteps.stop()

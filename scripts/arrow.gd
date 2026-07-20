@@ -36,7 +36,7 @@ func _on_area_entered(area: Area2D) -> void:
 		return
 
 	if hit_player.has_method("take_damage"):
-		hit_player.take_damage(damage)
+		hit_player.take_damage(damage, "arrow")
 
 	if hit_player.has_method("apply_knockback"):
 		hit_player.apply_knockback(direction.normalized(), knockback_strength)
@@ -50,9 +50,6 @@ func _on_body_entered(body):
 	if body.is_in_group("enemies"):
 		return
 
-	# Der Spieler wird ausschließlich über seine Hurtbox getroffen. Sein Körper
-	# liegt auf derselben Ebene und würde den Pfeil sonst wirkungslos schlucken,
-	# falls body_entered im selben Physikschritt zuerst feuert.
 	if body.is_in_group("player"):
 		return
 
