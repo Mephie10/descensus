@@ -14,7 +14,7 @@ Ein dynamischer 2D-Dungeon-Crawler aus der Vogelperspektive, entwickelt mit **Go
 2. Öffnen Sie den Projektordner in der **Godot 4 Engine**.
 3. Starten Sie die Hauptszene (F5), um das Spiel auszuführen.
 
-## Verwendete Ressourcen (Credits)
+## Verwendete Ressourcen
 Für die Entwicklung dieses Spiels wurden folgende externe Assets verwendet:
 
 * https://indie-vova.itch.io/dungeons-and-pixels-starter-pack
