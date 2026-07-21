@@ -3,7 +3,7 @@
 Ein dynamischer 2D-Dungeon-Crawler aus der Vogelperspektive, entwickelt mit **Godot 4** und **GDScript** im Rahmen eines Informatik-Projekts der 10. Klasse.
 
 ## Kernfunktionen
-* **Dynamische Levelarchitektur:** Zwei Hauptlevel mit insgesamt fünf Unterleveln, die eine nicht-lineare Erkundung ermöglichen.
+* **Dynamische Levelarchitektur:** Zwei Hauptlevel mit insgesamt sieben Unterleveln, die eine nicht-lineare Erkundung ermöglichen.
 * **Gegner-KI:** Vier unterschiedliche Feindtypen (Skull, Warrior, Archer, Mage) mit individuellen Verhaltensmustern und automatischem Pathfinding zur Hindernisumgehung.
 * **Interaktive Umgebung:** Implementierung eines Schlüsselsystems, plünderbarer Schatztruhen sowie physikalischer Umgebungshindernisse (z. B. Spinnweben).
 * **Audio-Design:** Dynamische Zuweisung spezifischer Hintergrundmusik pro Level sowie detailliertes Audio-Feedback für Interaktionen und Kämpfe.
