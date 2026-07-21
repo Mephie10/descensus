@@ -17,12 +17,12 @@ Ein dynamischer 2D-Dungeon-Crawler aus der Vogelperspektive, entwickelt mit **Go
 ## Verwendete Ressourcen (Credits)
 Für die Entwicklung dieses Spiels wurden folgende externe Assets verwendet:
 
-https://indie-vova.itch.io/dungeons-and-pixels-starter-pack
-https://crusenho.itch.io/complete-ui-essential-pack
-https://nvthicprod.itch.io/health-sfx-pack
-https://crossedkiller.itch.io/dungeon-music
-https://jhawk-studios.itch.io/dungeon-music-pack
-https://ci.itch.io/400-sounds-pack
+* https://indie-vova.itch.io/dungeons-and-pixels-starter-pack
+* https://crusenho.itch.io/complete-ui-essential-pack
+* https://nvthicprod.itch.io/health-sfx-pack
+* https://crossedkiller.itch.io/dungeon-music
+* https://jhawk-studios.itch.io/dungeon-music-pack
+* https://ci.itch.io/400-sounds-pack
 
 ## Entwickler
 * **Daniel Möbes** (GitHub: [Mephie10](https://github.com/Mephie10))
