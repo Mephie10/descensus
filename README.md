@@ -1,6 +1,6 @@
 # Descensus
 
-Ein dynamischer 2D-Dungeon-Crawler aus der Vogelperspektive, entwickelt mit **Godot 4** und **GDScript** im Rahmen eines Informatik-Projekts.
+Ein dynamischer 2D-Dungeon-Crawler aus der Vogelperspektive, entwickelt mit **Godot 4** und **GDScript** im Rahmen eines Informatik-Projekts der 10. Klasse.
 
 ## Kernfunktionen
 * **Dynamische Levelarchitektur:** Zwei Hauptlevel mit insgesamt fünf Unterleveln, die eine nicht-lineare Erkundung ermöglichen.
