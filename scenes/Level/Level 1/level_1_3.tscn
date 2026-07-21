@@ -421,6 +421,12 @@ position = Vector2(-114, -53)
 
 [node name="Coins" type="Node" parent="." unique_id=1635827555]
 
+[node name="SilverCoin" parent="Coins" unique_id=1481024319 instance=ExtResource("11_dvopq")]
+position = Vector2(241, -182)
+
+[node name="SilverCoin2" parent="Coins" unique_id=1035547595 instance=ExtResource("11_dvopq")]
+position = Vector2(64, 10)
+
 [node name="MapLayers" type="Node" parent="." unique_id=198020501]
 
 [node name="TileMapLayer0" type="TileMapLayer" parent="MapLayers" unique_id=456309348]
@@ -437,23 +443,38 @@ z_index = 4
 tile_map_data = PackedByteArray("AAD+//v/AAAAAAAAAAAHAPj/AAAAAAEAAAAHAPv/AAADAAAAAAD+//7/AAADAAAAAAAIAP//AAADAAEAAAA=")
 tile_set = SubResource("TileSet_80xb7")
 
-[node name="silver_sconce" parent="MapLayers" unique_id=408966746 instance=ExtResource("6_hjv6k")]
-position = Vector2(-82, -145)
+[node name="Destructibles" type="Node" parent="." unique_id=1413409713]
 
-[node name="magic_torch" parent="MapLayers" unique_id=1328690673 instance=ExtResource("7_vpqsg")]
-position = Vector2(208, -242)
+[node name="GoldBarrel" parent="Destructibles" unique_id=746976458 instance=ExtResource("9_tyyfi")]
+position = Vector2(236, -103)
 
-[node name="Barrel" parent="MapLayers" unique_id=1372817860 instance=ExtResource("8_3vlng")]
+[node name="SilverBarrel" parent="Destructibles" unique_id=1808508512 instance=ExtResource("10_bu4vd")]
+position = Vector2(-113, 15)
+
+[node name="Barrel" parent="Destructibles" unique_id=1372817860 instance=ExtResource("8_3vlng")]
 position = Vector2(41, -90)
 
-[node name="Barrel2" parent="MapLayers" unique_id=1501961022 instance=ExtResource("8_3vlng")]
+[node name="Barrel2" parent="Destructibles" unique_id=1501961022 instance=ExtResource("8_3vlng")]
 position = Vector2(187, 4)
-
-[node name="Destructibles" type="Node" parent="." unique_id=1413409713]
 
 [node name="AnimatedProps" type="Node" parent="." unique_id=1502477630]
 
+[node name="silver_sconce" parent="AnimatedProps" unique_id=408966746 instance=ExtResource("6_hjv6k")]
+position = Vector2(-82, -145)
+
+[node name="magic_torch" parent="AnimatedProps" unique_id=1328690673 instance=ExtResource("7_vpqsg")]
+position = Vector2(208, -242)
+
 [node name="Enemies" type="Node" parent="." unique_id=1184464848]
+
+[node name="Skull" parent="Enemies" unique_id=443707851 instance=ExtResource("12_hvcwf")]
+position = Vector2(22, -50)
+
+[node name="SkeletonWarrior" parent="Enemies" unique_id=1024088533 instance=ExtResource("13_8r2e0")]
+position = Vector2(139, -90)
+
+[node name="SkeletonMage" parent="Enemies" unique_id=390298192 instance=ExtResource("14_n87o8")]
+position = Vector2(253, -41)
 
 [node name="Flasks" type="Node" parent="." unique_id=499946403]
 
@@ -463,27 +484,6 @@ offset_top = -666.0
 offset_right = 1032.0
 offset_bottom = 523.0
 color = Color(0.07058824, 0.07058824, 0.08627451, 1)
-
-[node name="GoldBarrel" parent="." unique_id=746976458 instance=ExtResource("9_tyyfi")]
-position = Vector2(236, -103)
-
-[node name="SilverBarrel" parent="." unique_id=1808508512 instance=ExtResource("10_bu4vd")]
-position = Vector2(-113, 15)
-
-[node name="SilverCoin" parent="." unique_id=1481024319 instance=ExtResource("11_dvopq")]
-position = Vector2(241, -182)
-
-[node name="SilverCoin2" parent="." unique_id=1035547595 instance=ExtResource("11_dvopq")]
-position = Vector2(64, 10)
-
-[node name="Skull" parent="." unique_id=443707851 instance=ExtResource("12_hvcwf")]
-position = Vector2(22, -50)
-
-[node name="SkeletonWarrior" parent="." unique_id=1024088533 instance=ExtResource("13_8r2e0")]
-position = Vector2(139, -90)
-
-[node name="SkeletonMage" parent="." unique_id=390298192 instance=ExtResource("14_n87o8")]
-position = Vector2(253, -41)
 
 [node name="Crate" parent="." unique_id=1199433031 instance=ExtResource("15_mbh5l")]
 position = Vector2(-47, 15)

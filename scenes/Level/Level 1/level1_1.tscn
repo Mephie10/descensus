@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://d4je1lwidqmf1" path="res://scenes/Barrels/barrel_silver_coin.tscn" id="9_07tm0"]
 [ext_resource type="PackedScene" uid="uid://71dntc31wywm" path="res://scenes/Light/torch.tscn" id="10_gy6rt"]
 [ext_resource type="PackedScene" uid="uid://cf4w0iy3hjoqs" path="res://scenes/Light/golden_sconce.tscn" id="11_1ncy1"]
+[ext_resource type="PackedScene" uid="uid://cspbrenytwko8" path="res://scenes/Enemies/skeleton_archer.tscn" id="13_fijoo"]
 [ext_resource type="PackedScene" uid="uid://b7t82rf3kbb5l" path="res://scenes/Light/magic_torch.tscn" id="13_sux0x"]
 [ext_resource type="PackedScene" uid="uid://beoyoc48xpq8" path="res://scenes/Enemies/skull.tscn" id="14_j1366"]
 [ext_resource type="PackedScene" uid="uid://jq0gcnhq3tyw" path="res://scenes/Level/door.tscn" id="15_s7355"]
@@ -473,8 +474,11 @@ position = Vector2(-47, 111)
 
 [node name="Enemies" type="Node" parent="." unique_id=804086061]
 
+[node name="SkeletonArcher" parent="Enemies" unique_id=1813222114 instance=ExtResource("13_fijoo")]
+position = Vector2(-192, 173)
+
 [node name="SkeletonWarrior" parent="Enemies" unique_id=1024088533 instance=ExtResource("8_761ku")]
-position = Vector2(-173, 175)
+position = Vector2(-141, 175)
 
 [node name="Skull2" parent="Enemies" unique_id=836672195 instance=ExtResource("14_j1366")]
 position = Vector2(3, -20)
