@@ -23,6 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://ntq858xmu5u7" path="res://scenes/Chests/crate.tscn" id="19_36vb8"]
 [ext_resource type="PackedScene" uid="uid://b1jjtl7w0ukvd" path="res://scenes/Chests/bronze_chest.tscn" id="20_55qgn"]
 [ext_resource type="PackedScene" uid="uid://jq0gcnhq3tyw" path="res://scenes/Level/door.tscn" id="22_awoat"]
+[ext_resource type="PackedScene" uid="uid://s370x6ycqirs" path="res://scenes/Keys/bronze_key.tscn" id="24_tnutk"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_trtic"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -567,7 +568,12 @@ position = Vector2(13, 3)
 
 [node name="Door2" parent="." unique_id=1762627015 instance=ExtResource("22_awoat")]
 position = Vector2(288, -110)
-is_level_goal = true
-required_key_value = 3
+next_sublevel_path = "uid://0tagf1thoupr"
+required_key_value = 1
+spawn_id = "Level_2_1_Door2"
+target_spawn_id = "Level_2_3_Door"
+
+[node name="BronzeKey" parent="." unique_id=273476352 instance=ExtResource("24_tnutk")]
+position = Vector2(-3, -105)
 
 [editable path="Door"]

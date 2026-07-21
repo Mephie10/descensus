@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://ldmp6lste3ak" path="res://scenes/Chests/silver_chest.tscn" id="16_t0nxt"]
 [ext_resource type="PackedScene" uid="uid://cf4w0iy3hjoqs" path="res://scenes/Light/golden_sconce.tscn" id="17_g5wli"]
 [ext_resource type="PackedScene" uid="uid://b7t82rf3kbb5l" path="res://scenes/Light/magic_torch.tscn" id="18_t1ejn"]
+[ext_resource type="PackedScene" uid="uid://cq4br8t0h2ns6" path="res://scenes/trap.tscn" id="19_gtmli"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_trtic"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -471,16 +472,20 @@ position = Vector2(-1, 80)
 [node name="Skull" parent="Enemies" unique_id=443707851 instance=ExtResource("13_j51ac")]
 position = Vector2(73, -88)
 
+[node name="Trap" parent="Enemies" unique_id=1583920477 instance=ExtResource("19_gtmli")]
+position = Vector2(197, -49)
+texture_variant = 2
+
 [node name="Flasks" type="Node" parent="." unique_id=499946403]
 
 [node name="HealingFlask" parent="Flasks" unique_id=403026442 instance=ExtResource("14_3a1x5")]
 position = Vector2(80, 19)
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1929018793]
-offset_left = -814.0
-offset_top = -477.0
-offset_right = 902.0
-offset_bottom = 637.0
+offset_left = -793.0
+offset_top = -531.0
+offset_right = 923.0
+offset_bottom = 583.0
 color = Color(0.07058824, 0.07058824, 0.08627451, 1)
 
 [node name="Door" parent="." unique_id=1602873714 instance=ExtResource("6_7k63o")]
@@ -504,7 +509,6 @@ position = Vector2(-13, 0)
 [node name="SilverChest" parent="." unique_id=1199433031 instance=ExtResource("16_t0nxt")]
 position = Vector2(197, -82)
 coin_reward = 4
-healing_flask_reward = 1
 grants_key_value = 3
 
 [node name="golden_sconce" parent="." unique_id=1434347657 instance=ExtResource("17_g5wli")]

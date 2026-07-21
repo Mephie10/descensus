@@ -130,9 +130,9 @@ const SFX_GAIN := {
 	"player_hit_magic": -3.0,
 	"player_death": -3.0,
 	"key_get": -3.0,
-	"silver_coin_pickup": -4.0,
-	"golden_coin_pickup": -4.0,
-	"healingflask_get": -3.0,
+	"silver_coin_pickup": -5.0,
+	"golden_coin_pickup": -5.0,
+	"healingflask_get": -4.0,
 	"healingflask_use": -5.0,
 	"healingflask_heal": -3.0,
 	# Gegner
@@ -143,7 +143,7 @@ const SFX_GAIN := {
 	"mage_footsteps": -6.0,
 	"mage_attack": -2.0,
 	"skull_footsteps": -7.0,
-	"enemy_hit": 1.0,
+	"enemy_hit": 4.0,
 	# Welt
 	"barrels_destroyed": 5.0,
 	"crates_open": 5.0,
