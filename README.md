@@ -26,3 +26,5 @@ Für die Entwicklung dieses Spiels wurden folgende externe Assets verwendet:
 
 ## Entwickler
 * **Daniel Möbes** (GitHub: [Mephie10](https://github.com/Mephie10))
+* **Raphael Söder**
+* **Korbinian Berger**
